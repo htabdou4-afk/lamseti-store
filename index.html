@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#172b3a">
+  <meta name="description" content="LAMSETI للطباعة والتخصيص: دفاتر حسب الطلب وبطاقات أعمال للمحلات والشركات.">
+  <title>LAMSETI | الطباعة والتخصيص</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="announcement">دفاتر مخصصة • بطاقات أعمال احترافية • خدمات للأفراد والمحلات والمؤسسات</div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="LAMSETI الرئيسية">LAMSETI <small>PRINT & CUSTOM</small></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#home">الرئيسية</a><a href="#products">المنتجات</a><a href="#notebook-request">دفتر مخصص</a><a href="#business-request">بطاقات الأعمال</a><a href="#how">طريقة الطلب</a>
+      <button class="cart-open" id="cartOpen">السلة <b id="cartCount">0</b></button>
+      <button class="admin-open" id="adminOpen">دخول المالك</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section-wrap" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow">الطباعة والتخصيص حسب الطلب</span>
+        <h1>منتجات تحمل اسمك،<br>وتعكس هوية مشروعك.</h1>
+        <p>دفاتر ومذكرات مصممة حسب ذوقك، وبطاقات أعمال منظمة واحترافية للمحلات والحرفيين والشركات. اختر من المنتجات المتاحة أو أرسل مواصفاتك الخاصة.</p>
+        <div class="hero-actions"><a class="btn primary" href="#products">اكتشف المنتجات</a><a class="btn secondary" href="#business-request">اطلب بطاقات أعمال</a></div>
+        <div class="hero-points"><span>✓ تخصيص حسب الطلب</span><span>✓ للأفراد والمهنيين</span><span>✓ توصيل حسب المنطقة</span></div>
+      </div>
+      <div class="hero-visual"><img src="assets/notebooks-set.jpg" alt="نماذج من دفاتر لمستي"><div class="visual-note">LAMSETI <span>تفاصيل تصنع الفرق</span></div></div>
+    </section>
+
+    <section class="trust-strip section-wrap">
+      <article><b>منتجات شخصية</b><span>اسمك ومواصفاتك على الغلاف.</span></article>
+      <article><b>حلول للمحلات</b><span>بطاقات أعمال بهوية نشاطك.</span></article>
+      <article><b>تأكيد قبل التنفيذ</b><span>نراجع السعر والتصميم والمدة معك.</span></article>
+    </section>
+
+    <section class="section-wrap section-block" id="products">
+      <div class="section-heading"><span class="eyebrow">تسوق حسب احتياجك</span><h2>المنتجات المتاحة</h2><p>الأسعار المعروضة قابلة للتأكيد حسب المواصفات والكمية.</p></div>
+      <div class="product-grid" id="productGrid"><div class="loading">جارٍ تحميل المنتجات...</div></div>
+    </section>
+
+    <section class="section-wrap section-block split-section" id="notebook-request">
+      <div class="section-heading align-start"><span class="eyebrow">صمّم دفترك</span><h2>دفتر مخصص باسمك ومواصفاتك</h2><p>أخبرنا كيف تريد أن يكون كناشك: الاسم على الغلاف، المقاس، عدد الصفحات، نوع الورق، الألوان، التجليد والزخارف. نراجع الطلب ونرسل لك السعر ومدة الإنجاز قبل البدء.</p></div>
+      <form id="notebookForm" class="form-card">
+        <h3>تفاصيل الدفتر</h3>
+        <div class="form-grid">
+          <label>الاسم الكامل *<input name="customer_name" required maxlength="100"></label>
+          <label>رقم الهاتف *<input name="phone" type="tel" required maxlength="30"></label>
+          <label>الولاية *<input name="wilaya" required maxlength="80"></label>
+          <label>البلدية *<input name="city" required maxlength="80"></label>
+          <label>الاسم المطبوع على الغلاف *<input name="cover_name" required maxlength="100"></label>
+          <label>نوع الدفتر<select name="notebook_type"><option>دفتر ملاحظات</option><option>مفكرة / Planner</option><option>دفتر دراسة</option><option>دفتر وصفات</option><option>تصميم خاص</option></select></label>
+          <label>المقاس<select name="size"><option>A5</option><option>A4</option><option>A6</option><option>مقاس آخر</option></select></label>
+          <label>عدد الصفحات<select name="pages"><option>50</option><option>80</option><option>100</option><option>120</option><option>200</option><option>حسب الاقتراح</option></select></label>
+          <label>نوع الورق<select name="paper"><option>مسطر</option><option>مربعات</option><option>فارغ</option><option>منقط</option><option>مزيج</option></select></label>
+          <label>التجليد<select name="binding"><option>حلزوني</option><option>عادي</option><option>غلاف صلب</option><option>اقترحوا الأنسب</option></select></label>
+          <label>لون الغلاف<input name="cover_color" placeholder="كحلي، أسود، أزرق..."></label>
+          <label>الكمية<input name="quantity" type="number" min="1" value="1" required></label>
+          <label class="full">عنوان التوصيل بالتفصيل *<textarea name="address" required rows="2"></textarea></label>
+          <label class="full">التصميم والزخارف والتفاصيل المطلوبة<textarea name="design_notes" rows="3" placeholder="صف شكل الغلاف والألوان والصور أو الشعار..."></textarea></label>
+        </div>
+        <button class="btn primary full-btn" type="submit">إرسال طلب الدفتر المخصص</button>
+        <p class="form-note">إرسال الطلب لا يعني بدء التصنيع. نتواصل معك لتأكيد السعر والتفاصيل أولاً.</p>
+      </form>
+    </section>
+
+    <section class="section-wrap section-block business-block" id="business-request">
+      <div class="section-heading"><span class="eyebrow">لأصحاب المحلات والمشاريع</span><h2>بطاقات أعمال احترافية</h2><p>بطاقات فيزيت باسم محلك أو شركتك، مع تفاصيل التواصل والهوية البصرية.</p></div>
+      <div class="business-layout">
+        <div class="business-card-preview"><div class="mini-brand">LAMSETI <small>BUSINESS PRINT</small></div><div class="preview-lines"><b>اسم نشاطك التجاري</b><span>الاسم والصفة المهنية</span><span>الهاتف • البريد • العنوان</span></div><div class="preview-mark">YOUR<br>IDENTITY</div></div>
+        <form id="businessForm" class="form-card">
+          <h3>اطلب عرض سعر لبطاقاتك</h3>
+          <div class="form-grid">
+            <label>الاسم الكامل *<input name="customer_name" required maxlength="100"></label>
+            <label>رقم الهاتف *<input name="phone" type="tel" required maxlength="30"></label>
+            <label>الولاية *<input name="wilaya" required maxlength="80"></label>
+            <label>البلدية *<input name="city" required maxlength="80"></label>
+            <label>اسم المحل أو النشاط *<input name="business_name" required maxlength="120"></label>
+            <label>الاسم والصفة على البطاقة<input name="display_name" maxlength="120"></label>
+            <label>المهنة / النشاط<input name="activity" maxlength="120"></label>
+            <label>الهاتف المطبوع<input name="printed_phone" maxlength="40"></label>
+            <label>البريد الإلكتروني<input name="email" type="email" maxlength="120"></label>
+            <label>روابط التواصل أو الموقع<input name="social_links" maxlength="200"></label>
+            <label>الكمية<select name="quantity"><option>100 بطاقة</option><option>200 بطاقة</option><option>500 بطاقة</option><option>1000 بطاقة</option><option>كمية أخرى</option></select></label>
+            <label>الطباعة<select name="sides"><option>وجه واحد</option><option>وجهان</option></select></label>
+            <label>التشطيب<select name="finish"><option>مطفي</option><option>لامع</option><option>حسب المتاح</option></select></label>
+            <label>الشعار<select name="logo_status"><option>لدي شعار جاهز</option><option>أحتاج تصميم شعار</option><option>أحتاج تصميم البطاقة فقط</option></select></label>
+            <label class="full">العنوان على البطاقة<input name="printed_address" maxlength="200"></label>
+            <label class="full">عنوان التوصيل بالتفصيل *<textarea name="delivery_address" required rows="2"></textarea></label>
+            <label class="full">الألوان والأسلوب وملاحظات التصميم<textarea name="design_notes" rows="3" placeholder="رسمي، بسيط، ألوان العلامة التجارية..."></textarea></label>
+          </div>
+          <button class="btn primary full-btn" type="submit">إرسال طلب بطاقات الأعمال</button>
+          <p class="form-note">يتم تأكيد السعر النهائي بعد مراجعة الكمية والمواصفات وجودة الطباعة المطلوبة.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section-wrap section-block" id="how">
+      <div class="section-heading"><span class="eyebrow">طريقة العمل</span><h2>طلب واضح من البداية للنهاية</h2></div>
+      <div class="steps"><article><b>01</b><h3>اختر</h3><p>منتجاً جاهزاً أو أرسل مواصفاتك.</p></article><article><b>02</b><h3>نراجع</h3><p>نتواصل لتأكيد التصميم والسعر والمدة.</p></article><article><b>03</b><h3>نعتمد</h3><p>توافق على التفاصيل وأي عربون مطلوب.</p></article><article><b>04</b><h3>نجهز ونسلّم</h3><p>ننفذ الطلب وننسق طريقة التوصيل.</p></article></div>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#home">LAMSETI <small>PRINT & CUSTOM</small></a><p>دفاتر مخصصة وبطاقات أعمال للأفراد والمهنيين وأصحاب المشاريع.</p><div id="footerContact"></div><small>© <span id="year"></span> LAMSETI. جميع الحقوق محفوظة.</small></footer>
+
+  <div class="modal" id="cartModal" aria-hidden="true"><div class="modal-panel"><button class="modal-close" data-close="cartModal">×</button><div id="cartContent"></div></div></div>
+  <div class="modal" id="authModal" aria-hidden="true"><div class="modal-panel narrow"><button class="modal-close" data-close="authModal">×</button><h2>دخول المالك</h2><form id="loginForm"><label>البريد الإلكتروني<input name="email" type="email" required></label><label>كلمة المرور<input name="password" type="password" required></label><button class="btn primary full-btn">تسجيل الدخول</button><p class="form-note">حساب المالك يُنشأ مسبقاً من لوحة Supabase، ولا يوجد تسجيل عام للمديرين.</p></form><p id="authMessage" class="status-msg"></p></div></div>
+  <div class="modal" id="adminModal" aria-hidden="true"><div class="modal-panel admin-panel"><button class="modal-close" data-close="adminModal">×</button><div class="admin-head"><div><span class="eyebrow">إدارة المتجر</span><h2>لوحة المالك</h2></div><button class="btn secondary" id="logoutBtn">تسجيل الخروج</button></div><div class="admin-tabs"><button class="active" data-tab="adminProducts">المنتجات</button><button data-tab="adminOrders">الطلبات</button><button data-tab="adminSettings">الإعدادات</button></div>
+    <section id="adminProducts" class="admin-tab"><form id="productForm" class="form-card admin-form"><h3 id="productFormTitle">إضافة منتج</h3><input type="hidden" name="id"><div class="form-grid"><label>اسم المنتج *<input name="name" required></label><label>السعر بالدينار *<input name="price" type="number" min="0" required></label><label class="full">وصف المنتج<textarea name="description" rows="2"></textarea></label><label>صورة المنتج<input name="image" type="file" accept="image/*"></label><label>أو رابط صورة<input name="image_url" type="url" placeholder="https://..."></label><label>التصنيف<select name="category"><option value="notebooks">دفاتر</option><option value="business_cards">بطاقات أعمال</option><option value="other">أخرى</option></select></label><label>الظهور<select name="is_active"><option value="true">منشور</option><option value="false">مخفي</option></select></label></div><button class="btn primary">حفظ المنتج</button><button type="button" class="btn secondary" id="resetProduct">إفراغ الحقول</button></form><div id="adminProductList" class="admin-list"></div></section>
+    <section id="adminOrders" class="admin-tab hidden"><div class="admin-list" id="adminOrderList">تحميل الطلبات...</div></section>
+    <section id="adminSettings" class="admin-tab hidden"><form id="settingsForm" class="form-card"><h3>إعدادات التواصل والتوصيل</h3><label>اسم المتجر<input name="store_name" required></label><label>رقم واتساب الدولي دون + أو مسافات<input name="whatsapp" placeholder="213XXXXXXXXX"></label><label>رسالة تأكيد الطلب<textarea name="order_message" rows="2"></textarea></label><label>ملاحظات التوصيل<textarea name="shipping_note" rows="2" placeholder="مثال: نؤكد تكلفة التوصيل حسب الولاية قبل الشحن."></textarea></label><button class="btn primary">حفظ الإعدادات</button></form></section>
+  </div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="config.js"></script><script src="app.js"></script>
+</body></html>
