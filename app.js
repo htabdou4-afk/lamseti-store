@@ -51,12 +51,12 @@
     $("productGrid").innerHTML=products.length?products.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${escapeHtml(imageSrc(p.image_url))}" alt="${escapeHtml(p.name)}" onerror="this.onerror=null;this.src='notebooks-set.jpg'"></div><div class="product-info"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"منتج من LAMSETI، تواصل معنا لتفاصيل التخصيص.")}</p><div class="product-price">${money(p.price)}</div><button class="btn primary" data-add="${escapeHtml(p.id)}">أضف إلى السلة</button></div></article>`).join(""):'<div class="empty">لا توجد منتجات منشورة حالياً. يمكنك إرسال طلب مخصص.</div>';
   }
   $("productGrid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=b.dataset.add,p=products.find(x=>String(x.id)===String(id));if(!p)return;const line=cart.find(x=>String(x.id)===String(id));if(line){if(line.qty>=99){toast("الحد الأقصى 99 قطعة من المنتج الواحد.");return;}line.qty++;}
-    else cart.push({id,qty:1});
+    else {if(cart.length>=50){toast("السلة تستوعب 50 منتجاً مختلفاً كحد أقصى.");return;}cart.push({id,qty:1});}
     saveCart();toast("أضيف المنتج إلى السلة.");});
   function openCart() {
     const rows=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));if(!p)return "";return `<div class="cart-line"><div><b>${escapeHtml(p.name)}</b><br><span>${money(p.price)} للوحدة</span></div><div class="qty-controls"><button data-qty="${escapeHtml(p.id)}" data-delta="-1">−</button><b>${c.qty}</b><button data-qty="${escapeHtml(p.id)}" data-delta="1">+</button></div></div>`;}).join("");
     const total=cart.reduce((sum,c)=>sum+(Number(products.find(p=>String(p.id)===String(c.id))?.price)||0)*c.qty,0);
-    $("cartContent").innerHTML=`<h2>سلة المشتريات</h2>${rows||'<div class="empty">السلة فارغة حالياً.</div>'}${rows?`<div class="cart-total"><span>المجموع (دون التوصيل)</span><span>${money(total)}</span></div><p class="form-note">${escapeHtml(settings.shipping_note||"يتم تأكيد التوصيل حسب المنطقة.")}</p><form id="checkoutForm"><div class="form-grid"><label>الاسم الكامل *<input name="customer_name" required></label><label>رقم الهاتف *<input name="phone" required type="tel"></label><label>الولاية *<input name="wilaya" required></label><label>البلدية *<input name="city" required></label><label class="full">عنوان التوصيل *<textarea name="address" required rows="2"></textarea></label><label class="full">ملاحظات<textarea name="notes" rows="2"></textarea></label></div><button class="btn primary full-btn">تأكيد الطلب</button></form>`:""}`;
+    $("cartContent").innerHTML=`<h2>سلة المشتريات</h2>${rows||'<div class="empty">السلة فارغة حالياً.</div>'}${rows?`<div class="cart-total"><span>المجموع (دون التوصيل)</span><span>${money(total)}</span></div><p class="form-note">${escapeHtml(settings.shipping_note||"يتم تأكيد التوصيل حسب المنطقة.")}</p><form id="checkoutForm"><div class="form-grid"><label>الاسم الكامل *<input name="customer_name" required minlength="2" maxlength="100"></label><label>رقم الهاتف *<input name="phone" required type="tel" maxlength="30"></label><label>الولاية *<input name="wilaya" required maxlength="80"></label><label>البلدية *<input name="city" required maxlength="80"></label><label class="full">عنوان التوصيل *<textarea name="address" required rows="2"></textarea></label><label class="full">ملاحظات<textarea name="notes" rows="2"></textarea></label></div><button class="btn primary full-btn">تأكيد الطلب</button></form>`:""}`;
     modal("cartModal");
   }
   $("cartOpen").addEventListener("click",openCart);
@@ -93,7 +93,7 @@ ${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`)
 الاسم: ${f.customer_name}
 الهاتف: ${f.phone}
 العنوان: ${f.wilaya} - ${f.city} - ${f.address}
-ملاحظات: ${f.notes||"لا يوجد"}`;
+ملاحظات: ${f.notes||"لا يوجد"}\n${settings.order_message||""}`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");finishWhatsAppWindow(waWindow,msg);
   });
   async function submitCustom(form, type) {
