@@ -26,9 +26,9 @@
   async function loadProducts() {
     if(!supabase) {
       products=[
-        {id:"sample-1",name:"دفتر ملاحظاتي الوردي",description:"غلاف مزخرف بالورود والفراشات. يمكن تخصيص الاسم والألوان.",price:450,image_url:"assets/pink-notebook.jpg"},
-        {id:"sample-2",name:"دفتر ملاحظاتي الأزرق",description:"تصميم هادئ وأنيق قابل للتعديل حسب الطلب.",price:450,image_url:"assets/blue-notebook.jpg"},
-        {id:"sample-3",name:"دفاتر بتصاميم متنوعة",description:"نماذج متعددة للمذكرات والدفاتر الشخصية.",price:500,image_url:"assets/collection.jpg"}
+        {id:"sample-1",name:"دفتر ملاحظاتي الوردي",description:"غلاف مزخرف بالورود والفراشات. يمكن تخصيص الاسم والألوان.",price:450,image_url:"pink-notebook.jpg"},
+        {id:"sample-2",name:"دفتر ملاحظاتي الأزرق",description:"تصميم هادئ وأنيق قابل للتعديل حسب الطلب.",price:450,image_url:"blue-notebook.jpg"},
+        {id:"sample-3",name:"دفاتر بتصاميم متنوعة",description:"نماذج متعددة للمذكرات والدفاتر الشخصية.",price:500,image_url:"collection.jpg"}
       ];
       renderProducts(); return;
     }
@@ -37,7 +37,7 @@
     products=data||[]; renderProducts();
   }
   function renderProducts() {
-    $("productGrid").innerHTML=products.length?products.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${escapeHtml(p.image_url||"assets/notebooks-set.jpg")}" alt="${escapeHtml(p.name)}" onerror="this.onerror=null;this.src='assets/notebooks-set.jpg'"></div><div class="product-info"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"منتج من LAMSETI، تواصل معنا لتفاصيل التخصيص.")}</p><div class="product-price">${money(p.price)}</div><button class="btn primary" data-add="${escapeHtml(p.id)}">أضف إلى السلة</button></div></article>`).join(""):'<div class="empty">لا توجد منتجات منشورة حالياً. يمكنك إرسال طلب مخصص.</div>';
+    $("productGrid").innerHTML=products.length?products.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${escapeHtml(p.image_url||"notebooks-set.jpg")}" alt="${escapeHtml(p.name)}" onerror="this.onerror=null;this.src='assets/notebooks-set.jpg'"></div><div class="product-info"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"منتج من LAMSETI، تواصل معنا لتفاصيل التخصيص.")}</p><div class="product-price">${money(p.price)}</div><button class="btn primary" data-add="${escapeHtml(p.id)}">أضف إلى السلة</button></div></article>`).join(""):'<div class="empty">لا توجد منتجات منشورة حالياً. يمكنك إرسال طلب مخصص.</div>';
   }
   $("productGrid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=b.dataset.add,p=products.find(x=>String(x.id)===String(id));if(!p)return;const line=cart.find(x=>String(x.id)===String(id));if(line)line.qty++;else cart.push({id,qty:1});saveCart();toast("أضيف المنتج إلى السلة.");});
   function openCart() {
@@ -50,16 +50,16 @@
   $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
   $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return {product_id:c.id,name:p?.name,unit_price:p?.price,quantity:c.qty};}),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);
     const orderId=crypto.randomUUID();
-    const order={id:orderId,order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
-    const {error}=await supabase.from("orders").insert(order);if(error){toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
+    const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
+    const {data:savedOrder,error}=await supabase.from("orders").insert(order).select("id").single();if(error){toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
     const msg=`طلب جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
   });
   async function submitCustom(form, type) {
     if(!requireBackend())return;
-    const fields=Object.fromEntries(new FormData(form)),orderId=crypto.randomUUID();const common={id:orderId,customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
-    const {error}=await supabase.from("orders").insert(common);
-    if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}
+    const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
+    const {data:savedOrder,error}=await supabase.from("orders").insert(common).select("id").single();
+    if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
     const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
   }
