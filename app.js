@@ -62,7 +62,7 @@
     if(!requireBackend())return;
     const fields=Object.fromEntries(new FormData(form));
     const quantity=Number(fields.quantity);
-    const minQuantity=type==="business_cards"?50:1;
+    const minQuantity=1;
     const maxQuantity=type==="business_cards"?50000:500;
     if(!Number.isInteger(quantity)||quantity<minQuantity||quantity>maxQuantity){
       toast(`الكمية يجب أن تكون رقماً صحيحاً بين ${minQuantity} و${maxQuantity}.`);
