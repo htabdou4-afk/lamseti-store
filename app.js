@@ -217,7 +217,23 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
       toast("تعذر حفظ المنتج. تحقق من الاتصال والصلاحيات.");console.error("Product save failed",error);
     } finally {if(button){button.disabled=false;button.textContent="حفظ المنتج";}}
   });
-  async function loadOrders(){const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false}).limit(100);if(error){$("adminOrderList").textContent="تعذر تحميل الطلبات.";return;}const labels={new:"جديد",confirmed:"تم التأكيد",in_production:"قيد الإنجاز",ready:"جاهز",shipped:"تم الشحن",delivered:"تم التسليم",cancelled:"ملغي"};$("adminOrderList").innerHTML=(data||[]).map(o=>`<article class="admin-row" style="align-items:flex-start"><div style="min-width:0;flex:1"><b>#${o.id} · ${escapeHtml(o.customer_name)}</b><br>${escapeHtml(o.order_type)} · ${escapeHtml(o.phone)} · ${escapeHtml(o.wilaya||"")} / ${escapeHtml(o.city||"")}<br><small>${new Date(o.created_at).toLocaleString("ar-DZ")} · ${money(o.total_amount)}</small><details><summary>تفاصيل الطلب</summary><pre style="white-space:pre-wrap;font:12px inherit">${escapeHtml(JSON.stringify(o.order_type==="cart"?o.items:o.custom_details,null,2))}\n${escapeHtml(o.notes||"")}</pre></details></div><select class="status-select" data-order-status="${o.id}" data-previous-status="${o.status}">${Object.entries(labels).map(([v,l])=>`<option value="${v}" ${o.status===v?"selected":""}>${l}</option>`).join("")}</select></article>`).join("")||"لا توجد طلبات حتى الآن.";}
+  async function loadOrders(){
+    let data,error;
+    try {
+      ({data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false}).limit(100));
+    } catch(err) { error=err; }
+    if(error){$("adminOrderList").textContent="تعذر تحميل الطلبات. تحقق من الاتصال والصلاحيات.";console.error("Orders load failed",error);return;}
+    const labels={new:"جديد",confirmed:"تم التأكيد",in_production:"قيد الإنجاز",ready:"جاهز",shipped:"تم الشحن",delivered:"تم التسليم",cancelled:"ملغي"};
+    const typeLabels={cart:"طلب منتجات",notebook:"دفتر مخصص",business_cards:"بطاقات أعمال"};
+    const detailLabels={customer_name:"اسم العميل",phone:"الهاتف",wilaya:"الولاية",city:"البلدية",cover_name:"الاسم على الغلاف",notebook_type:"نوع الدفتر",size:"المقاس",pages:"عدد الصفحات",paper:"نوع الورق",binding:"التجليد",cover_color:"لون الغلاف",quantity:"الكمية",address:"عنوان التوصيل",design_notes:"ملاحظات التصميم",business_name:"اسم النشاط",display_name:"الاسم على البطاقة",activity:"النشاط",printed_phone:"الهاتف المطبوع",email:"البريد الإلكتروني",social_links:"روابط التواصل",sides:"عدد الأوجه",finish:"التشطيب",logo_status:"حالة الشعار",printed_address:"العنوان المطبوع",delivery_address:"عنوان التوصيل"};
+    $("adminOrderList").innerHTML=(data||[]).map(o=>{
+      const details=o.order_type==="cart"
+        ? (Array.isArray(o.items)?o.items.map(item=>`المنتج: ${item.name||"منتج"} | الكمية: ${item.quantity} | سعر الوحدة: ${money(item.unit_price)}`).join("\n"):"")
+        : Object.entries(o.custom_details||{}).map(([key,value])=>`${detailLabels[key]||key}: ${Array.isArray(value)?value.join("، "):String(value??"")}`).join("\n");
+      const extra=[details,o.notes?("ملاحظات: "+o.notes):""].filter(Boolean).join("\n");
+      return `<article class="admin-row" style="align-items:flex-start"><div style="min-width:0;flex:1"><b>#${escapeHtml(o.id)} · ${escapeHtml(o.customer_name)}</b><br>${escapeHtml(typeLabels[o.order_type]||o.order_type)} · ${escapeHtml(o.phone)} · ${escapeHtml(o.wilaya||"")} / ${escapeHtml(o.city||"")}<br><small>${new Date(o.created_at).toLocaleString("ar-DZ")} · ${money(o.total_amount)}</small><details><summary>تفاصيل الطلب</summary><pre style="white-space:pre-wrap;font:12px inherit">${escapeHtml(extra)}</pre></details></div><select class="status-select" data-order-status="${escapeHtml(o.id)}" data-previous-status="${escapeHtml(o.status)}">${Object.entries(labels).map(([v,l])=>`<option value="${v}" ${o.status===v?"selected":""}>${l}</option>`).join("")}</select></article>`;
+    }).join("")||"لا توجد طلبات حتى الآن.";
+  }
   $("adminOrderList").addEventListener("change",async e=>{
     const s=e.target.closest("[data-order-status]"); if(!s)return;
     const previous=s.dataset.previousStatus; s.disabled=true;
