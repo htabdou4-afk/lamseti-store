@@ -36,6 +36,17 @@ async function bootScrollAnimations() {
         import("gsap"), import("gsap/ScrollTrigger")
       ]);
       gsap.registerPlugin(ScrollTrigger);
+      const lenis = window.__lamsetiLenis;
+      if (lenis) lenis.on("scroll", ScrollTrigger.update);
+
+      const stopMotion = event => {
+        if (!event.matches) return;
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        gsap.globalTimeline.clear();
+        gsap.set([hero, steps].filter(Boolean), { clearProps: "all" });
+      };
+      reducedMotion.addEventListener?.("change", stopMotion);
+
       if (hero) {
         const copy = hero.querySelector(".hero-copy");
         const visual = hero.querySelector(".hero-visual");
