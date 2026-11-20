@@ -1335,3 +1335,76 @@ main .standard-visual-note>div>ul li{
   main .standard-visual-note>img{max-height:250px!important}
   main .standard-visual-note>div{padding-top:12px!important}
 }
+
+
+/* Notebook request: align its heading, artwork and copy as one clean vertical column */
+#notebook-request{
+  align-items:start!important;
+}
+#notebook-request>.section-heading.align-start{
+  position:static!important;
+  top:auto!important;
+  align-self:start!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  min-width:0!important;
+  width:100%!important;
+  margin:0!important;
+  text-align:right!important;
+}
+#notebook-request>.section-heading.align-start>.eyebrow{
+  display:block!important;
+  width:100%!important;
+  text-align:right!important;
+  margin:0 0 8px!important;
+}
+#notebook-request>.section-heading.align-start>h2{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 12px!important;
+  text-align:right!important;
+  line-height:1.45!important;
+}
+#notebook-request>.section-heading.align-start>p{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 22px!important;
+  text-align:right!important;
+  line-height:1.9!important;
+}
+#notebook-request .standard-visual-note{
+  width:100%!important;
+  margin:0!important;
+  align-self:stretch!important;
+  box-sizing:border-box!important;
+}
+#notebook-request .standard-visual-note>img{
+  width:100%!important;
+  max-width:100%!important;
+  max-height:290px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+#notebook-request .standard-visual-note>div{
+  width:100%!important;
+  align-items:stretch!important;
+  text-align:right!important;
+  box-sizing:border-box!important;
+}
+#notebook-request .standard-visual-note>div>b,
+#notebook-request .standard-visual-note>div>span{
+  display:block!important;
+  width:100%!important;
+  text-align:right!important;
+  line-height:1.9!important;
+  overflow-wrap:anywhere!important;
+}
+#notebook-request>#notebookForm{
+  align-self:start!important;
+  margin:0!important;
+}
+@media(max-width:760px){
+  #notebook-request>.section-heading.align-start{position:static!important}
+  #notebook-request .standard-visual-note>img{max-height:250px!important}
+}
