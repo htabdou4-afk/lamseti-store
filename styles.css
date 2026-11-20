@@ -1187,3 +1187,47 @@ body{color:#382b35;background:#fffdfc}
 #business-request .section-heading h2{color:#382b35!important}
 #business-request .section-heading>p{color:#786875!important}
 #business-request .section-heading .eyebrow{color:#9e416b!important}
+
+
+/* LAMSETI contrast audit: prevent legacy dark-theme text rules from hiding headings */
+main :is(h1,h2,h3,h4,h5,h6),
+main .section-heading :is(h1,h2,h3,h4,h5,h6),
+main .product-info h3,
+main .form-card h3,
+main .steps h3,
+main .category-copy b,
+main .standard-spec-note b{
+  color:#382b35!important;
+}
+main .section-heading>p,
+main .hero-copy>p,
+main .product-info p,
+main .steps p,
+main .category-copy small,
+main .standard-spec-note>div>span,
+main .standard-spec-note>div>ul,
+main .form-note,
+main .field-hint{
+  color:#786875!important;
+}
+main .eyebrow,
+main .section-heading .eyebrow,
+main .hero .eyebrow{
+  color:#9e416b!important;
+}
+/* Keep intentionally dark branded surfaces readable without changing their white copy */
+.site-footer,.site-footer *,
+.announcement,
+.business-card-preview,.business-card-preview *,
+.btn.primary,.btn.primary *,
+.admin-open,.admin-open *,
+.toast,.toast *{
+  color:inherit;
+}
+.site-footer,.site-footer *{color:#fff7fa}
+.announcement{color:#fff6f7}
+.business-card-preview{color:#fff}
+.business-card-preview .mini-brand small{color:#f4dce7}
+.business-card-preview .preview-lines span,
+.business-card-preview .preview-mark{color:#f3dce6}
+.btn.primary,.btn.primary *,.admin-open,.admin-open *, .toast,.toast *{color:#fff}
