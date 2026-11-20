@@ -18,6 +18,8 @@
   function saveCart() { localStorage.setItem("lamseti_cart",JSON.stringify(cart)); updateCartCount(); }
   function updateCartCount() { $("cartCount").textContent=cart.reduce((n,x)=>n+x.qty,0); }
   function waUrl(message) { const phone=(settings.whatsapp||"").replace(/\D/g,""); if(!/^213\d{8,9}$/.test(phone)){toast("لم يتم ضبط رقم واتساب المتجر بعد. تم حفظ الطلب ويمكنك ضبط الرقم من إعدادات الإدارة.");return null;} return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`; }
+  function prepareWhatsAppWindow() { const phone=(settings.whatsapp||"").replace(/\D/g,""); return /^213\d{8,9}$/.test(phone) ? window.open("about:blank","_blank") : null; }
+  function finishWhatsAppWindow(popup,message) { const url=waUrl(message); if(!url){popup?.close();return;} if(popup) popup.location.href=url; else toast("تم حفظ الطلب. تعذر فتح واتساب تلقائياً، يمكنك فتحه يدوياً وإرسال تفاصيل الطلب."); }
   async function loadSettings() {
     if (!supabase) return;
     const {data,error}=await supabase.from("store_settings").select("*").eq("id",1).maybeSingle();
@@ -50,18 +52,20 @@
   $("cartOpen").addEventListener("click",openCart);
   $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
   $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return {product_id:c.id,name:p?.name,unit_price:p?.price,quantity:c.qty};}),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);
+    const waWindow=prepareWhatsAppWindow();
     const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
-    const {data:savedOrder,error}=await supabase.from("orders").insert(order).select("id").single();if(error){toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
+    const {data:savedOrder,error}=await supabase.from("orders").insert(order).select("id").single();if(error){waWindow?.close();toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
     const msg=`طلب جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
-    cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
+    cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");finishWhatsAppWindow(waWindow,msg);
   });
   async function submitCustom(form, type) {
     if(!requireBackend())return;
+    const waWindow=prepareWhatsAppWindow();
     const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
     const {data:savedOrder,error}=await supabase.from("orders").insert(common).select("id").single();
-    if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
+    if(error){waWindow?.close();toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
     const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
-    form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
+    form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");finishWhatsAppWindow(waWindow,msg);
   }
   $("notebookForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"notebook");});
   $("businessForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"business_cards");});
