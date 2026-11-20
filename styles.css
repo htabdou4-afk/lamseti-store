@@ -826,3 +826,75 @@ button:disabled{cursor:wait;opacity:.7}
   .category-card,.category-card img,.product-card,.btn{transition:none!important}
   .category-card:hover,.product-card:hover{transform:none}
 }
+
+
+/* Custom request artwork: large, translucent background behind the copy */
+.standard-visual-note{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  min-height:285px;
+  justify-content:center;
+  overflow:hidden;
+  padding:30px 28px;
+  border:1px solid rgba(212,166,74,.34);
+  border-right:3px solid var(--gold);
+  border-radius:15px;
+  background:
+    radial-gradient(ellipse at 18% 48%,rgba(48,112,103,.24),transparent 58%),
+    linear-gradient(135deg,rgba(20,31,51,.98),rgba(10,16,30,.96));
+  box-shadow:0 18px 42px rgba(0,0,0,.24);
+}
+.standard-visual-note>img{
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-height:none;
+  margin:0;
+  object-fit:cover;
+  object-position:center;
+  opacity:.37;
+  filter:saturate(.82) contrast(1.08);
+}
+.standard-visual-note:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(10,15,30,.12) 0%,rgba(10,15,30,.58) 43%,rgba(10,15,30,.9) 100%);
+}
+.standard-visual-note>div{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:470px;
+  margin-right:auto;
+  gap:12px;
+  text-shadow:0 2px 12px rgba(0,0,0,.35);
+}
+.standard-visual-note>div>b{
+  display:block;
+  color:#f1d49a;
+  font-size:21px;
+  line-height:1.5;
+  font-weight:800;
+}
+.standard-visual-note>div>span,
+.standard-visual-note>div>ul{
+  color:#f0eee8;
+  font-size:14px;
+  line-height:2;
+}
+.standard-visual-note ul{padding-right:20px}
+@media(max-width:600px){
+  .standard-visual-note{min-height:260px;padding:23px 20px}
+  .standard-visual-note>img{object-position:center}
+  .standard-visual-note:after{
+    background:linear-gradient(0deg,rgba(10,15,30,.94),rgba(10,15,30,.56) 62%,rgba(10,15,30,.22));
+  }
+  .standard-visual-note>div{max-width:none;margin:0}
+  .standard-visual-note>div>b{font-size:19px}
+}
