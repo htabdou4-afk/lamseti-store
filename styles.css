@@ -1027,3 +1027,66 @@ body{background:#fff;color:var(--ink);line-height:1.65}
  .steps article:nth-child(3){border-right:0}
  .steps article:nth-child(n+3){border-top:1px solid #e5e5ea}
 }
+
+
+/* LAMSETI feminine identity: blush, rose, lilac and warm ivory */
+:root{
+  --ink:#382b35;
+  --paper:#fff8f7;
+  --muted:#82727d;
+  --line:#f0dfe6;
+  --teal:#b34f78;
+  --gold:#c49b72;
+  --lamseti-rose:#b94f79;
+  --lamseti-deep:#713b59;
+  --lamseti-blush:#f8e8ed;
+  --lamseti-lilac:#eee8f5;
+  --lamseti-ivory:#fffaf4;
+}
+body{background:#fffdfc;color:#382b35}
+.announcement{background:#713b59;color:#fff6f7}
+.site-header{background:rgba(255,251,250,.96);border-bottom-color:#f2e4e9}
+.brand,.hero h1,.hero h2,.section-heading h2,.category-copy b,.product-info h3{color:#382b35}
+.main-nav>a:hover,.main-nav>a.active{color:#b34f78}
+.main-nav>a.active:after{background:#b34f78}
+.admin-open{background:#713b59;border-color:#713b59}
+.hero{background:linear-gradient(135deg,#fff7f7 0%,#f8eaf0 52%,#f1ebf7 100%)}
+.hero .eyebrow,.section-heading .eyebrow{color:#a34b70}
+.hero h2 em{color:#b34f78}
+.hero-copy>p,.section-heading>p{color:#806f7a}
+.btn.primary{background:#b34f78;color:#fff}
+.btn.primary:hover{background:#913d63}
+.btn.secondary{border-color:#b34f78;color:#a3446e}
+.hero-visual{background:#f5e5ec}
+.visual-note{color:#713b59;background:rgba(255,250,250,.94)}
+.trust-strip{border-bottom-color:#f0e0e7}
+.trust-strip article+article{border-right-color:#f0e0e7}
+.trust-icon{background:#f9edf1;color:#b34f78}
+.category-card{background:linear-gradient(145deg,#fff4f5,#f3eaf4);border:1px solid #f0dfe6}
+.category-card:hover{background:linear-gradient(145deg,#ffeff2,#eee5f4);border-color:#e4bdce}
+.category-copy b{color:#493542}
+.category-copy small{color:#887783}
+.product-card{background:#fff;border:1px solid #f1e5e9}
+.product-card:hover{border-color:#e4c0cf}
+.product-image{background:linear-gradient(145deg,#fff6f5,#f2eaf3)}
+.product-price{color:#ad4c76}
+.form-card{border-color:#f0dfe6;background:#fffdfd}
+.form-card h3{color:#59384b;border-bottom-color:#f2e5e9}
+.form-card input,.form-card select,.form-card textarea{background:#fff9fa;border-color:#ecdde3;color:#493542}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus{border-color:#c66b91;box-shadow:0 0 0 3px #c66b9118}
+.business-block{background:linear-gradient(135deg,#fff6f6,#f5eff8)}
+.standard-visual-note{border-color:#ead5df;border-right-color:#b34f78;background:linear-gradient(135deg,#713b59,#9a5477)}
+.standard-visual-note>div>b{color:#ffe1eb}
+.standard-visual-note>div>span,.standard-visual-note>div>ul{color:#fff4f7}
+.steps{border-color:#f0dfe6}
+.steps article+article{border-right-color:#f0dfe6}
+.steps article>b{color:#b34f78}
+.brand-promise{background:#fff7f7;color:#713b59}
+.site-footer{background:#713b59}
+.form-note,.field-hint{color:#8a7882}
+@media(max-width:850px){
+ .trust-strip article:nth-child(3),.trust-strip article:nth-child(4){border-top-color:#f0e0e7}
+}
+@media(max-width:600px){
+ .business-block{background:linear-gradient(150deg,#fff6f6,#f5eff8)}
+}
