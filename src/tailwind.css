@@ -45,11 +45,11 @@
   #checkoutForm select,
   #checkoutForm textarea,
   #loginForm input {
-    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 focus:border-lamseti-teal focus:ring-4 focus:ring-lamseti-teal/10;
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition duration-200;
   }
 
   .form-card input[type="file"] {
-    @apply w-full rounded-lg border border-dashed border-slate-300 bg-white p-2 text-xs text-slate-600 file:ml-3 file:rounded-md file:border-0 file:bg-lamseti-ink file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white;
+    @apply w-full rounded-lg border border-dashed border-slate-300 bg-white p-2 text-xs text-slate-600;
   }
 
   .form-card label,
@@ -58,9 +58,40 @@
     @apply text-sm font-semibold text-slate-700;
   }
 
+  .form-card input::placeholder,
+  .form-card textarea::placeholder,
+  #checkoutForm input::placeholder,
+  #checkoutForm textarea::placeholder,
+  #loginForm input::placeholder {
+    color: #94a3b8;
+  }
+
+  .form-card input:focus-visible,
+  .form-card select:focus-visible,
+  .form-card textarea:focus-visible,
+  #checkoutForm input:focus-visible,
+  #checkoutForm textarea:focus-visible,
+  #loginForm input:focus-visible {
+    border-color: #246e70;
+    outline: none;
+    box-shadow: 0 0 0 4px rgb(36 110 112 / 10%);
+  }
+
+  .form-card input[type="file"]::file-selector-button {
+    margin-left: .75rem;
+    border: 0;
+    border-radius: .375rem;
+    background: #172b3a;
+    padding: .5rem .75rem;
+    color: white;
+    font-size: .75rem;
+    font-weight: 600;
+  }
+
   .form-card button:focus-visible,
   #checkoutForm button:focus-visible,
   #loginForm button:focus-visible {
-    @apply outline-none ring-2 ring-lamseti-teal ring-offset-2;
+    outline: 2px solid #246e70;
+    outline-offset: 2px;
   }
 }
