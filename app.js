@@ -110,7 +110,7 @@ ${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`)
 الاسم: ${f.customer_name}
 الهاتف: ${f.phone}
 العنوان: ${f.wilaya} - ${f.city} - ${f.address}
-ملاحظات: ${f.notes||"لا يوجد"}\n${settings.order_message||""}`;
+ملاحظات: ${f.notes||"لا يوجد"}\nأرجو تأكيد استلام طلبي وإعلامي بالسعر ومدة الإنجاز.`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");finishWhatsAppWindow(waWindow,msg);
   });
   async function submitCustom(form, type) {
