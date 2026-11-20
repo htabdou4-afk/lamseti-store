@@ -51,11 +51,31 @@
   }
   $("cartOpen").addEventListener("click",openCart);
   $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
-  $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return p?{product_id:c.id,name:p.name,unit_price:Number(p.price)||0,quantity:c.qty}:null;}).filter(Boolean),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);if(!items.length){toast("السلة فارغة أو لم تعد المنتجات متاحة.");cart=[];saveCart();openCart();return;}
+  $("cartContent").addEventListener("submit",async e=>{
+    if(e.target.id!=="checkoutForm")return;
+    e.preventDefault();
+    if(!requireBackend())return;
+    const submitButton=e.target.querySelector('button[type="submit"]');
+    if(submitButton?.disabled)return;
+    const f=Object.fromEntries(new FormData(e.target));
+    const items=cart.map(c=>{
+      const p=products.find(x=>String(x.id)===String(c.id));
+      return p?{product_id:c.id,name:p.name,unit_price:Number(p.price)||0,quantity:c.qty}:null;
+    }).filter(Boolean);
+    if(!items.length){toast("السلة فارغة أو لم تعد المنتجات متاحة.");cart=[];saveCart();openCart();return;}
+    const total=items.reduce((sum,item)=>sum+item.unit_price*item.quantity,0);
     const waWindow=prepareWhatsAppWindow();
     const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
-    const {error}=await supabase.from("orders").insert(order);if(error){waWindow?.close();toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
-    const msg=`طلب جديد من ${settings.store_name}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
+    if(submitButton){submitButton.disabled=true;submitButton.textContent="جارٍ تسجيل الطلب...";}
+    const {error}=await supabase.from("orders").insert(order);
+    if(error){waWindow?.close();if(submitButton){submitButton.disabled=false;submitButton.textContent="تأكيد الطلب";}toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
+    const msg=`طلب جديد من ${settings.store_name}
+${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}
+المجموع دون التوصيل: ${money(total)}
+الاسم: ${f.customer_name}
+الهاتف: ${f.phone}
+العنوان: ${f.wilaya} - ${f.city} - ${f.address}
+ملاحظات: ${f.notes||"لا يوجد"}`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");finishWhatsAppWindow(waWindow,msg);
   });
   async function submitCustom(form, type) {
