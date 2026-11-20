@@ -1524,3 +1524,5 @@ main .standard-visual-note>svg{
 @media(max-width:760px){
   main .standard-visual-note>svg{max-height:250px!important}
 }
+/* Keep filtered products hidden even when product cards define their own display mode. */
+.product-card[hidden]{display:none!important}
