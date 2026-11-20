@@ -156,9 +156,29 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
       console.error("Login failed",error);
     } finally { if(button){button.disabled=false;button.textContent="تسجيل الدخول";} }
   });
-  $("logoutBtn").addEventListener("click",async()=>{await supabase.auth.signOut();currentUser=null;modal("adminModal",false);toast("تم تسجيل الخروج.");});
-  async function isAdmin(){if(!currentUser)return false;const {data,error}=await supabase.from("profiles").select("role").eq("id",currentUser.id).maybeSingle();return !error&&data?.role==="admin";}
-  async function openAdmin(){if(!await isAdmin()){toast("هذا الحساب لا يملك صلاحية إدارة المتجر.");await supabase.auth.signOut();currentUser=null;return;}modal("adminModal");await Promise.all([loadAdminProducts(),loadOrders(),loadAdminSettings()]);}
+  $("logoutBtn").addEventListener("click",async()=>{
+    const button=$("logoutBtn");button.disabled=true;
+    try {
+      const {error}=await supabase.auth.signOut();if(error)throw error;
+      currentUser=null;modal("adminModal",false);toast("تم تسجيل الخروج.");
+    } catch(error){toast("تعذر تسجيل الخروج. تحقق من الاتصال.");console.error("Logout failed",error);}
+    finally{button.disabled=false;}
+  });
+  async function isAdmin(){
+    if(!currentUser)return false;
+    try{const {data,error}=await supabase.from("profiles").select("role").eq("id",currentUser.id).maybeSingle();return !error&&data?.role==="admin";}
+    catch(error){console.error("Admin role check failed",error);return false;}
+  }
+  async function openAdmin(){
+    if(!await isAdmin()){
+      toast("تعذر التحقق من صلاحية الإدارة لهذا الحساب.");
+      try{await supabase.auth.signOut();}catch(error){console.error("Unauthorized session sign-out failed",error);}
+      currentUser=null;return;
+    }
+    modal("adminModal");
+    const results=await Promise.allSettled([loadAdminProducts(),loadOrders(),loadAdminSettings()]);
+    results.filter(x=>x.status==="rejected").forEach(x=>console.error("Admin panel load failed",x.reason));
+  }
   document.querySelectorAll(".admin-tabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".admin-tabs button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".admin-tab").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.tab));}));
   $("resetProduct").addEventListener("click",()=>{$("productForm").reset();$("productForm").elements.id.value="";$("productFormTitle").textContent="إضافة منتج";});
   async function loadAdminProducts(){let data,error;try{({data,error}=await supabase.from("products").select("*").order("created_at",{ascending:false}));}catch(err){error=err;}if(error){$("adminProductList").textContent="تعذر تحميل المنتجات.";console.error(error);return;}$("adminProductList").innerHTML=(data||[]).map(p=>`<div class="admin-row"><div class="admin-row-main"><img src="${escapeHtml(imageSrc(p.image_url))}" alt=""><div><b>${escapeHtml(p.name)}</b><br>${money(p.price)} · ${p.is_active?"منشور":"مخفي"}</div></div><div class="admin-row-actions"><button class="small-action" data-edit-product="${p.id}">تعديل</button><button class="small-action" data-delete-product="${p.id}">حذف</button></div></div>`).join("")||"لا توجد منتجات بعد.";}
@@ -214,7 +234,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     e.preventDefault(); const form=e.currentTarget,button=form.querySelector('button:not([type="button"])');
     if(button?.disabled)return;
     const row=Object.fromEntries(new FormData(form)); row.id=1;
-    if(!/^213\\d{8,9}$/.test(String(row.whatsapp||"").replace(/\\D/g,"")) && row.whatsapp.trim()){
+    if(!/^213\d{8,9}$/.test(String(row.whatsapp||"").replace(/\D/g,"")) && row.whatsapp.trim()){
       toast("رقم واتساب يجب أن يبدأ بـ 213 ويتبعه 8 أو 9 أرقام."); return;
     }
     if(button){button.disabled=true;button.textContent="جارٍ الحفظ...";}
