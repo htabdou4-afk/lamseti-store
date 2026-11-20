@@ -161,7 +161,7 @@ begin
   if length(trim(coalesce(new.customer_name,''))) < 2 or length(new.customer_name) > 100 then
     raise exception 'Invalid customer name';
   end if;
-  if length(regexp_replace(coalesce(new.phone,''),'\\s','','g')) < 8 or length(new.phone) > 30 then
+  if length(regexp_replace(coalesce(new.phone,''),'[[:space:]]','','g')) < 8 or length(new.phone) > 30 then
     raise exception 'Invalid phone number';
   end if;
 
@@ -170,7 +170,7 @@ begin
   new.phone := trim(new.phone);
 
   if new.order_type = 'cart' then
-    if jsonb_typeof(new.items) <> 'array' or jsonb_array_length(new.items) < 1 or jsonb_array_length(new.items) > 50 then
+    if new.items is null or jsonb_typeof(new.items) is distinct from 'array' or jsonb_array_length(new.items) < 1 or jsonb_array_length(new.items) > 50 then
       raise exception 'Invalid cart items';
     end if;
 
