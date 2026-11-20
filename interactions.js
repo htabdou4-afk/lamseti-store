@@ -29,23 +29,41 @@
     updateNotebook();
   }
 
-  // Business-card preview follows the details as they are typed
+  // Business-card proof preview follows the actual print fields.
   if (businessForm) {
     const fields = {
       name: businessForm.elements.business_name,
       person: businessForm.elements.display_name,
       activity: businessForm.elements.activity,
       phone: businessForm.elements.printed_phone,
-      email: businessForm.elements.email
+      email: businessForm.elements.email,
+      address: businessForm.elements.printed_address,
+      sides: businessForm.elements.sides,
+      finish: businessForm.elements.finish
     };
+    const set = (id, value, fallback) => { const node=$(id); if(node) node.textContent=value || fallback; };
     const updateBusiness = () => {
       const val = key => fields[key]?.value.trim() || "";
-      $("liveBusinessName").textContent = val("name") || "اسم نشاطك التجاري";
-      $("liveBusinessRole").textContent = [val("person"), val("activity")].filter(Boolean).join(" • ") || "الاسم والصفة المهنية";
-      $("liveBusinessContact").textContent = [val("phone"), val("email")].filter(Boolean).join(" • ") || "الهاتف • البريد • العنوان";
+      const business=val("name") || "اسم نشاطك التجاري";
+      const person=val("person");
+      const activity=val("activity");
+      const phone=val("phone");
+      const email=val("email");
+      const address=val("address");
+      set("liveBusinessName",business,"اسم نشاطك التجاري");
+      set("liveBusinessBackName",business,"اسم نشاطك");
+      set("liveBusinessRole",person,"الاسم والصفة المهنية");
+      set("liveBusinessActivity",activity,"نشاطك التجاري");
+      set("liveBusinessPhone",phone,"+213 XX XX XX XX");
+      set("liveBusinessContact",[phone,email,address].filter(Boolean).join(" • "),"الهاتف • البريد • العنوان");
+      const stage=document.querySelector(".business-preview-stage");
+      if(stage) {
+        stage.classList.toggle("single-sided",fields.sides?.value==="وجه واحد");
+        stage.dataset.finish=fields.finish?.value || "مطفي";
+      }
     };
-    businessForm.addEventListener("input", updateBusiness);
-    businessForm.addEventListener("change", updateBusiness);
+    businessForm.addEventListener("input",updateBusiness);
+    businessForm.addEventListener("change",updateBusiness);
     updateBusiness();
   }
 
