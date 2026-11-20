@@ -1253,3 +1253,17 @@ main .standard-visual-note>div>ul li{
   font-weight:600!important;
   text-shadow:none!important;
 }
+
+
+/* LAMSETI custom artwork: warm gold typography trial */
+main .standard-visual-note>div>b{
+  color:#9b6b27!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.28)!important;
+}
+main .standard-visual-note>div>span,
+main .standard-visual-note>div>ul,
+main .standard-visual-note>div>ul li{
+  color:#80591f!important;
+  font-weight:600!important;
+  text-shadow:none!important;
+}
