@@ -8,6 +8,7 @@ const rootFile = name => fileURLToPath(new URL(`./${name}`, import.meta.url));
 
 const copyProductImages = {
   name: "copy-lamseti-product-images",
+  apply: "build",
   closeBundle() {
     mkdirSync(rootFile("./dist/"), { recursive: true });
     ["app.js", "config.js", "pink-notebook.jpg", "blue-notebook.jpg", "collection.jpg", "notebooks-set.jpg"]
