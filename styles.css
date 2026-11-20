@@ -1271,3 +1271,67 @@ main .standard-visual-note>div>ul li{
   font-weight:700!important;
   text-shadow:0 1px 1px rgba(0,0,0,.14)!important;
 }
+
+
+/* LAMSETI custom product cards: keep copy below the artwork, never over it */
+main .standard-visual-note{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:16px!important;
+  min-height:0!important;
+  padding:22px!important;
+  background:linear-gradient(145deg,#fffafb,#f6edf2)!important;
+  border:1px solid #e8cbd8!important;
+  border-right:4px solid #b34f78!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+}
+main .standard-visual-note>img{
+  position:static!important;
+  inset:auto!important;
+  z-index:auto!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-height:290px!important;
+  margin:0 auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:drop-shadow(0 10px 18px rgba(73,53,66,.12)) saturate(1.04)!important;
+}
+main .standard-visual-note:after{display:none!important;content:none!important}
+main .standard-visual-note>div{
+  position:static!important;
+  z-index:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding-top:14px!important;
+  border-top:1px solid #ead7e0!important;
+  gap:8px!important;
+  text-align:right!important;
+  text-shadow:none!important;
+}
+main .standard-visual-note>div>b{
+  color:#c18a2e!important;
+  -webkit-text-stroke:.65px #211820!important;
+  paint-order:stroke fill!important;
+  text-shadow:none!important;
+}
+main .standard-visual-note>div>span,
+main .standard-visual-note>div>ul,
+main .standard-visual-note>div>ul li{
+  color:#80591f!important;
+  -webkit-text-stroke:.25px #211820!important;
+  paint-order:stroke fill!important;
+  font-weight:650!important;
+  text-shadow:none!important;
+}
+@media(max-width:600px){
+  main .standard-visual-note{padding:16px!important;gap:12px!important}
+  main .standard-visual-note>img{max-height:250px!important}
+  main .standard-visual-note>div{padding-top:12px!important}
+}
