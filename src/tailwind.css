@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lamseti-ink: #172b3a;
+  --color-lamseti-teal: #246e70;
+  --color-lamseti-sand: #c8a878;
+  --color-lamseti-paper: #fbfaf7;
+  --font-lamseti: "IBM Plex Sans Arabic", Tahoma, Arial, sans-serif;
+}
+
+@layer base {
+  #lamseti-enhancements,
+  #lamseti-enhancements * {
+    font-family: var(--font-lamseti);
+  }
+}
+
+@keyframes lamseti-shimmer {
+  0% { background-position: 180% center; }
+  100% { background-position: -80% center; }
+}
+
+.lamseti-shimmer {
+  background-image: linear-gradient(100deg, #4a8584 15%, #c8a878 35%, #ffffff 50%, #4a8584 70%);
+  background-size: 220% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: lamseti-shimmer 5.5s linear infinite;
+}
+
+.lamseti-glow {
+  box-shadow: 0 12px 38px rgb(36 110 112 / 13%), 0 0 0 1px rgb(200 168 120 / 24%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamseti-shimmer { animation: none; background-position: 50% center; }
+}
