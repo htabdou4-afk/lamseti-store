@@ -7,15 +7,24 @@
 - مستودع GitHub: https://github.com/htabdou4-afk/lamseti-store
 
 ## التقنيات
-- واجهة ثابتة: HTML وCSS وJavaScript.
+- واجهة المتجر الحالية: HTML وCSS وJavaScript مع React island صغيرة للتحسينات الحركية.
+- البناء والتطوير: Vite 8.
+- التصميم: Tailwind CSS 4 مع مكونات shadcn/ui محلية مبنية على Radix UI وclass-variance-authority.
+- الحركة: Motion (الاسم الحالي لمكتبة Framer Motion)، وLenis للتمرير الناعم، وGSAP + ScrollTrigger.
+- الأيقونات ومكوّنات الواجهة: Lucide React وRadix Dialog.
 - قاعدة البيانات والمصادقة وتخزين الصور: Supabase.
-- الاستضافة والنشر التلقائي: Vercel.
+- الاستضافة والنشر التلقائي: Vercel، ومجلد الإنتاج هو `dist/`.
 - الخط: IBM Plex Sans Arabic.
 
 ## ملفات المشروع
 - `index.html`: أقسام المتجر والنماذج ولوحة المالك.
 - `styles.css`: الهوية البصرية والتصميم المتجاوب.
-- `app.js`: المنتجات والسلة والطلبات وتسجيل دخول المالك.
+- `app.js`: المنتجات والسلة والطلبات وتسجيل دخول المالك، مع بقاء تدفق المتجر الحالي دون إعادة كتابة وظائفه.
+- `src/main.js`: تحميل التحسينات تدريجياً.
+- `src/Enhancements.jsx`: عناصر Motion ونافذة Radix/shadcn للواجهة الرئيسية.
+- `src/components/ui/`: Button وInput وTextarea وDialog بأسلوب shadcn/ui.
+- `src/tailwind.css`: رموز التصميم وتوحيد أنماط حقول النماذج.
+- `vite.config.js` و`package.json`: إعداد البناء والمكتبات.
 - `config.js`: رابط Supabase والمفتاح العام publishable.
 - `assets/`: شعار المتجر ورسمة الواجهة الرئيسية.
 - صور المنتجات (`pink-notebook.jpg` وغيرها): موجودة في جذر المستودع.
@@ -61,3 +70,33 @@
 - لا يوجد ربط آلي مع شركات التوصيل أو حساب رسوم الشحن.
 - تأكيد السعر ومدة الإنجاز والتوصيل يتم يدوياً مع الزبون.
 - يجب إجراء اختبارات الطلبات والإدارة قبل اعتبار المتجر جاهزاً للبيع.
+
+## تشغيل النسخة الحديثة محلياً
+
+يتطلب Node.js 20.19 أو أحدث وnpm.
+
+```bash
+git clone https://github.com/htabdou4-afk/lamseti-store.git
+cd lamseti-store
+npm install
+npm run dev
+```
+
+لإنشاء نسخة الإنتاج ومعاينتها محلياً:
+
+```bash
+npm run build
+npm run preview
+```
+
+Vercel مضبوط على تنفيذ `npm install` ثم `npm run build` ونشر `dist/` تلقائياً. لا تحتاج إلى إدخال مفاتيح إضافية للمكتبات الحركية.
+
+## نظام الحركة والأداء
+
+- Lenis يُحمّل بعد جاهزية الصفحة وفي وقت خمول المتصفح، مع إبقاء التمرير الأصلي متاحاً عند فشل التحميل.
+- GSAP وScrollTrigger يُحمّلان عند اقتراب قسم Hero أو قسم خطوات الطلب من الشاشة، ويطبّقان حركة على Hero وبطاقات خطوات الطلب.
+- Motion/Framer Motion وReact وRadix تُحمّل كجزء منفصل عند خمول المتصفح، وتُستخدم في عناصر Hero والنافذة المنبثقة وحركة بطاقات المنتجات والأزرار.
+- تأثير اللمعان والتوهج خفيف ومكتوب بـ CSS/Tailwind، دون خلفيات WebGL أو فيديو.
+- جميع التأثيرات الحركية تتوقف أو تُخفّف عند تفعيل `prefers-reduced-motion`.
+- لم تتم إضافة Three.js أو Spline لأن الرسومات الحالية لا تحتاج مشهداً ثلاثي الأبعاد، ولأن ذلك سيزيد تكلفة التحميل على الهواتف.
+- ملف `components.json` يهيئ نمط shadcn/ui. المكونات الموجودة في `src/components/ui` محلية وقابلة للتعديل، وتعتمد Radix وTailwind بدلاً من تحميل مكتبة واجهات ضخمة.
