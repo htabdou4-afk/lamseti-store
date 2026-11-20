@@ -1181,3 +1181,9 @@ body{color:#382b35;background:#fffdfc}
  .standard-visual-note>div>b{font-size:19px}
  .standard-visual-note>div>span,.standard-visual-note>div>ul{font-size:13px}
 }
+
+
+/* Targeted fix: business section heading was overridden by an older high-specificity dark-theme rule */
+#business-request .section-heading h2{color:#382b35!important}
+#business-request .section-heading>p{color:#786875!important}
+#business-request .section-heading .eyebrow{color:#9e416b!important}
