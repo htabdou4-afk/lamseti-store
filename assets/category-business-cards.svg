@@ -1,7 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440">
-<defs><linearGradient id="navy" x2="1" y2="1"><stop stop-color="#344f72"/><stop offset="1" stop-color="#101a30"/></linearGradient><linearGradient id="teal" x2="1" y2="1"><stop stop-color="#8ce0cf"/><stop offset="1" stop-color="#3d9f9c"/></linearGradient><linearGradient id="coral" x2="1" y2="1"><stop stop-color="#ffb18f"/><stop offset="1" stop-color="#d95d70"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="16"/></filter></defs>
-<ellipse cx="320" cy="370" rx="220" ry="24" fill="#000" opacity=".38" filter="url(#shadow)"/><circle cx="120" cy="100" r="46" fill="#e9bd63" opacity=".14"/><circle cx="520" cy="300" r="58" fill="#59bcb4" opacity=".13"/>
-<g transform="rotate(-9 300 220)"><rect x="105" y="150" width="390" height="220" rx="18" fill="#0a1324" stroke="#e0ae58" stroke-width="4"/><rect x="125" y="119" width="390" height="220" rx="17" fill="url(#navy)" stroke="#f1d28b" stroke-width="4"/><path d="M149 145h342" stroke="#e6bd6a" stroke-width="3" opacity=".6"/><path d="M178 205l35-35 35 35-35 35z" fill="none" stroke="url(#teal)" stroke-width="7"/><path d="M202 205h22m-11-11v22" stroke="#f7d993" stroke-width="4" stroke-linecap="round"/><rect x="274" y="184" width="180" height="12" rx="6" fill="#fff0d0"/><rect x="274" y="211" width="132" height="8" rx="4" fill="#a8c3d0"/><path d="M160 280h130M160 301h94" stroke="#e5bd73" stroke-width="6" stroke-linecap="round"/><circle cx="456" cy="291" r="19" fill="url(#coral)"/></g>
-<g transform="rotate(10 180 115)"><rect x="68" y="54" width="230" height="126" rx="13" fill="#f5e7cb" stroke="#fff2d8" stroke-width="3"/><rect x="88" y="75" width="55" height="55" rx="10" fill="url(#coral)"/><path d="M163 89h112M163 108h83M88 148h187" stroke="#b7a98f" stroke-width="6" stroke-linecap="round"/></g>
-<g transform="rotate(18 505 90)"><rect x="464" y="48" width="100" height="100" rx="14" fill="url(#teal)"/><path d="M486 72h55v55h-55zM496 82h12v12h-12zm23 0h12v12h-12zm-23 23h12v12h-12zm23 0h12v12h-12z" fill="#17324a"/></g>
-<path d="M525 194l10 20 22 3-16 15 4 22-20-11-20 11 4-22-16-15 22-3z" fill="#f3c65e"/></svg>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#fff4f4"/><stop offset="1" stop-color="#eadfed"/></linearGradient>
+ <linearGradient id="berry" x2="1" y2="1"><stop stop-color="#bd668b"/><stop offset="1" stop-color="#713b59"/></linearGradient>
+ <linearGradient id="blush" x2="1" y2="1"><stop stop-color="#f8dfe8"/><stop offset="1" stop-color="#dfa9c0"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="13"/></filter>
+</defs>
+<rect width="640" height="440" rx="22" fill="url(#bg)"/>
+<circle cx="115" cy="95" r="42" fill="#fff" opacity=".65"/>
+<circle cx="530" cy="330" r="54" fill="#d8b9d0" opacity=".35"/>
+<ellipse cx="325" cy="365" rx="230" ry="25" fill="#65445a" opacity=".2" filter="url(#shadow)"/>
+<g transform="rotate(-8 315 210)">
+ <rect x="105" y="120" width="420" height="235" rx="16" fill="#64364f" opacity=".2" transform="translate(9 11)"/>
+ <rect x="105" y="120" width="420" height="235" rx="16" fill="url(#berry)" stroke="#e8c5ae" stroke-width="3"/>
+ <rect x="123" y="138" width="384" height="199" rx="9" fill="none" stroke="#f3d8c6" stroke-width="1.5"/>
+ <path d="M160 185c-28-26-46 13 0 44 46-31 28-70 0-44Z" fill="none" stroke="#f0d5b8" stroke-width="2.5"/>
+ <text x="215" y="197" fill="#fff3ef" font-family="Georgia,serif" font-size="29" letter-spacing="2">ROSE BOUTIQUE</text>
+ <text x="215" y="225" fill="#f1d9e2" font-family="Arial,sans-serif" font-size="11" letter-spacing="3">FASHION · ACCESSORIES</text>
+ <path d="M215 247h235" stroke="#dfbd9c" stroke-width="1.5"/>
+ <text x="215" y="278" fill="#fff3ef" font-family="Arial,sans-serif" font-size="13">YOUR NAME · FOUNDER</text>
+ <text x="215" y="302" fill="#f1d9e2" font-family="Arial,sans-serif" font-size="11">PHONE · INSTAGRAM</text>
+</g>
+<g transform="rotate(11 155 90)">
+ <rect x="70" y="48" width="175" height="100" rx="12" fill="#fffaf5" stroke="#d9bdc9" stroke-width="2"/>
+ <circle cx="105" cy="97" r="22" fill="url(#blush)"/>
+ <path d="M105 80c-13 13-10 26 0 35 10-9 13-22 0-35Z" fill="none" stroke="#9f5b78" stroke-width="1.8"/>
+ <path d="M142 83h80M142 101h63M92 129h130" stroke="#c49aaf" stroke-width="4" stroke-linecap="round"/>
+</g>
+<g transform="translate(490 52)" fill="none" stroke="#c786a4" stroke-width="2" opacity=".65"><path d="M0 30q25-35 50 0t50 0"/><path d="M25 4v52M75 4v52"/></g>
+<path d="M530 170l9 18 20 3-15 14 4 20-18-10-18 10 4-20-15-14 20-3z" fill="#d8b17f"/>
+</svg>
