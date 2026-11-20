@@ -651,3 +651,12 @@ body{
 .category-card img{height:calc(100% - 86px);padding:18px 20px 6px;object-fit:contain;opacity:1;filter:none;transition:transform .55s ease}
 .category-card:hover img{filter:none}
 @media(max-width:600px){.category-card img{height:calc(100% - 70px);padding:14px 14px 3px}}
+
+
+/* Illustrative mockups for the two creative standard models */
+.standard-visual-note{display:grid;grid-template-columns:minmax(125px,.9fr) minmax(0,1.1fr);align-items:center;gap:18px;min-width:0}
+.standard-visual-note>img{display:block;width:100%;max-height:205px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.28))}
+.standard-visual-note>div{display:flex;flex-direction:column;gap:10px;min-width:0}
+.standard-visual-note ul{margin-top:2px}
+@media(max-width:760px){.standard-visual-note{grid-template-columns:minmax(110px,.75fr) minmax(0,1.25fr);gap:12px}.standard-visual-note>img{max-height:165px}}
+@media(max-width:420px){.standard-visual-note{grid-template-columns:1fr}.standard-visual-note>img{max-height:190px;width:min(100%,300px);margin:auto}}
