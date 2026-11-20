@@ -10,7 +10,7 @@ const copyProductImages = {
   name: "copy-lamseti-product-images",
   closeBundle() {
     mkdirSync(rootFile("./dist/"), { recursive: true });
-    ["pink-notebook.jpg", "blue-notebook.jpg", "collection.jpg", "notebooks-set.jpg"]
+    ["app.js", "config.js", "pink-notebook.jpg", "blue-notebook.jpg", "collection.jpg", "notebooks-set.jpg"]
       .forEach(name => copyFileSync(rootFile(name), rootFile(`./dist/${name}`)));
   }
 };
