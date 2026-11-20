@@ -262,6 +262,39 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     finally{if(button){button.disabled=false;button.textContent="حفظ الإعدادات";}}
   });
   if(supabase){supabase.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;});supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});}
+  const menuToggle=$("menuToggle"), mainNav=$("mainNav");
+  if(menuToggle&&mainNav){
+    menuToggle.addEventListener("click",()=>{
+      const open=mainNav.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded",String(open));
+      menuToggle.setAttribute("aria-label",open?"إغلاق القائمة":"فتح القائمة");
+    });
+    mainNav.addEventListener("click",e=>{
+      if(e.target.closest("a")){mainNav.classList.remove("open");menuToggle.setAttribute("aria-expanded","false");}
+    });
+    document.addEventListener("click",e=>{
+      if(!e.target.closest(".site-header")&&!e.target.closest("#mainNav")){
+        mainNav.classList.remove("open");menuToggle.setAttribute("aria-expanded","false");
+      }
+    });
+  }
+  const searchToggle=$("searchToggle"),searchPanel=$("searchPanel"),productSearch=$("productSearch");
+  if(searchToggle&&searchPanel&&productSearch){
+    searchToggle.addEventListener("click",()=>{
+      const open=searchPanel.classList.toggle("open");
+      if(open){productSearch.focus();document.querySelector("#products")?.scrollIntoView({behavior:"smooth",block:"start"});}
+      else{productSearch.value="";document.querySelectorAll("#productGrid .product-card").forEach(card=>card.hidden=false);}
+    });
+    productSearch.addEventListener("input",()=>{
+      const query=productSearch.value.trim().toLocaleLowerCase("ar");
+      document.querySelectorAll("#productGrid .product-card").forEach(card=>{
+        card.hidden=!card.textContent.toLocaleLowerCase("ar").includes(query);
+      });
+    });
+    document.addEventListener("keydown",e=>{
+      if(e.key==="Escape"){searchPanel.classList.remove("open");productSearch.value="";document.querySelectorAll("#productGrid .product-card").forEach(card=>card.hidden=false);}
+    });
+  }
   $("year").textContent=new Date().getFullYear();updateCartCount();
   Promise.allSettled([loadSettings(),loadProducts()]).then(results=>{results.forEach((r)=>{if(r.status==="rejected")console.error("Store initialization failed",r.reason);});});
   const links=[...document.querySelectorAll('.main-nav a')],sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
