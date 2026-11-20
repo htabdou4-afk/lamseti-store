@@ -57,13 +57,13 @@ insert into public.store_settings (id) values (1) on conflict (id) do nothing;
 
 -- Starter catalog using the product photos bundled in the website repository.
 insert into public.products (name, description, price, image_url, category, is_active)
-select 'دفتر ملاحظاتي الوردي', 'غلاف مزخرف بالورود والفراشات. يمكن تخصيص الاسم والألوان.', 450, 'assets/pink-notebook.jpg', 'notebooks', true
+select 'دفتر ملاحظاتي الوردي', 'غلاف مزخرف بالورود والفراشات. يمكن تخصيص الاسم والألوان.', 450, 'pink-notebook.jpg', 'notebooks', true
 where not exists (select 1 from public.products where name = 'دفتر ملاحظاتي الوردي');
 insert into public.products (name, description, price, image_url, category, is_active)
-select 'دفتر ملاحظاتي الأزرق', 'تصميم هادئ وأنيق قابل للتعديل حسب الطلب.', 450, 'assets/blue-notebook.jpg', 'notebooks', true
+select 'دفتر ملاحظاتي الأزرق', 'تصميم هادئ وأنيق قابل للتعديل حسب الطلب.', 450, 'blue-notebook.jpg', 'notebooks', true
 where not exists (select 1 from public.products where name = 'دفتر ملاحظاتي الأزرق');
 insert into public.products (name, description, price, image_url, category, is_active)
-select 'دفاتر بتصاميم متنوعة', 'نماذج متعددة للمذكرات والدفاتر الشخصية.', 500, 'assets/collection.jpg', 'notebooks', true
+select 'دفاتر بتصاميم متنوعة', 'نماذج متعددة للمذكرات والدفاتر الشخصية.', 500, 'collection.jpg', 'notebooks', true
 where not exists (select 1 from public.products where name = 'دفاتر بتصاميم متنوعة');
 
 alter table public.profiles enable row level security;
