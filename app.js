@@ -59,7 +59,7 @@
     if(!requireBackend())return;
     const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
     const {data:savedOrder,error}=await supabase.from("orders").insert(common).select("id").single();
-    if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;const orderId=savedOrder.id;
+    if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
     const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
   }
