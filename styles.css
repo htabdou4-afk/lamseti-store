@@ -711,3 +711,15 @@ body{
   .product-image img{height:165px}
   .standard-visual-note>img{max-height:220px}
 }
+
+/* Give custom-order mockups more room and visual presence */
+.standard-visual-note{grid-template-columns:minmax(190px,1.05fr) minmax(0,1fr);gap:22px}
+.standard-visual-note>img{max-height:300px;transform:scale(1.06)}
+@media(max-width:760px){
+  .standard-visual-note{grid-template-columns:minmax(145px,.9fr) minmax(0,1.1fr)}
+  .standard-visual-note>img{max-height:245px}
+}
+@media(max-width:420px){
+  .standard-visual-note{grid-template-columns:1fr}
+  .standard-visual-note>img{max-height:250px;width:min(100%,360px)}
+}
