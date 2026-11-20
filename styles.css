@@ -418,3 +418,15 @@ footer{
  .business-card-preview{min-height:175px;max-width:100%}
  .business-card-back{transform:none}
 }
+
+
+/* Standard product information blocks (no live preview UI). */
+.standard-spec-note{
+  margin-top:24px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;
+  border:1px solid #e5dccd;border-right:4px solid #c8a878;border-radius:8px;
+  background:#fffefa;box-shadow:0 8px 24px rgba(20,43,56,.045);
+}
+.standard-spec-note>b{color:#193642;font-size:17px}
+.standard-spec-note>span{color:#647477;font-size:14px;line-height:1.9}
+.standard-spec-note ul{margin:2px 18px 0 0;padding:0;color:#647477;font-size:13px;line-height:2}
+.business-standard-note{margin:0;align-self:start}
