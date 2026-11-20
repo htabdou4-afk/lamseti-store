@@ -7,7 +7,7 @@ export const DialogPortal = DialogPrimitive.Portal;
 export const DialogClose = DialogPrimitive.Close;
 
 export function DialogOverlay({ className, ...props }) {
-  return <DialogPrimitive.Overlay className={cn("fixed inset-0 z-[80] bg-[#10232c]/55 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out", className)} {...props} />;
+  return <DialogPrimitive.Overlay className={cn("fixed inset-0 z-[80] bg-[#10232c]/55 backdrop-blur-sm transition-opacity duration-200 data-[state=open]:opacity-100 data-[state=closed]:opacity-0", className)} {...props} />;
 }
 
 export function DialogContent({ className, children, ...props }) {
@@ -16,7 +16,7 @@ export function DialogContent({ className, children, ...props }) {
       <DialogOverlay />
       <DialogPrimitive.Content
         dir="rtl"
-        className={cn("fixed left-1/2 top-1/2 z-[81] w-[min(92vw,34rem)] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/70 bg-white p-6 text-right text-lamseti-ink shadow-2xl outline-none", className)}
+        className={cn("fixed left-1/2 top-1/2 z-[81] w-[min(92vw,34rem)] -translate-x-1/2 -translate-y-1/2 scale-100 rounded-2xl border border-white/70 bg-white p-6 text-right text-lamseti-ink shadow-2xl outline-none transition duration-200 data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100", className)}
         {...props}
       >
         {children}
