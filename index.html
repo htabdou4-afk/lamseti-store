@@ -53,7 +53,7 @@
     </section>
 
     <section class="section-wrap section-block split-section" id="notebook-request">
-      <div class="section-heading align-start"><span class="eyebrow">صمّم دفترك</span><h2>دفتر مخصص باسمك ومواصفاتك</h2><p>أخبرنا كيف تريد أن يكون كناشك: الاسم على الغلاف، المقاس، عدد الصفحات، نوع الورق، الألوان، التجليد والزخارف. نراجع الطلب ونرسل لك السعر ومدة الإنجاز قبل البدء.</p></div>
+      <div class="section-heading align-start"><span class="eyebrow">صمّم دفترك</span><h2>دفتر مخصص باسمك ومواصفاتك</h2><p>أخبرنا كيف تريد أن يكون كناشك: الاسم على الغلاف، المقاس، عدد الصفحات، نوع الورق، الألوان، التجليد والزخارف. نراجع الطلب ونرسل لك السعر ومدة الإنجاز قبل البدء.</p><div class="notebook-live-preview" id="notebookLivePreview"><div class="live-notebook"><span class="live-spiral"></span><div class="live-cover"><small>LAMSETI • CUSTOM</small><b id="liveCoverName">اسمك هنا</b><i></i><span>دفترك، بطريقتك.</span></div></div><div class="preview-caption"><span class="live-dot"></span> معاينة مباشرة لغلاف دفترك</div></div></div>
       <form id="notebookForm" class="form-card">
         <h3>تفاصيل الدفتر</h3>
         <div class="form-grid">
@@ -80,7 +80,7 @@
     <section class="section-wrap section-block business-block" id="business-request">
       <div class="section-heading"><span class="eyebrow">لأصحاب المحلات والمشاريع</span><h2>بطاقات أعمال احترافية</h2><p>بطاقات فيزيت باسم محلك أو شركتك، مع تفاصيل التواصل والهوية البصرية.</p></div>
       <div class="business-layout">
-        <div class="business-card-preview"><div class="mini-brand">LAMSETI <small>BUSINESS PRINT</small></div><div class="preview-lines"><b>اسم نشاطك التجاري</b><span>الاسم والصفة المهنية</span><span>الهاتف • البريد • العنوان</span></div><div class="preview-mark">YOUR<br>IDENTITY</div></div>
+        <div class="business-card-preview"><div class="mini-brand">LAMSETI <small>BUSINESS PRINT</small></div><div class="preview-lines"><b id="liveBusinessName">اسم نشاطك التجاري</b><span id="liveBusinessRole">الاسم والصفة المهنية</span><span id="liveBusinessContact">الهاتف • البريد • العنوان</span></div><div class="preview-mark">YOUR<br>IDENTITY</div></div>
         <form id="businessForm" class="form-card">
           <h3>اطلب عرض سعر لبطاقاتك</h3>
           <div class="form-grid">
@@ -124,5 +124,5 @@
     <section id="adminSettings" class="admin-tab hidden"><form id="settingsForm" class="form-card"><h3>إعدادات التواصل والتوصيل</h3><label>اسم المتجر<input name="store_name" required></label><label>رقم واتساب الدولي دون + أو مسافات<input name="whatsapp" placeholder="213XXXXXXXXX"></label><label>رسالة تأكيد الطلب<textarea name="order_message" rows="2"></textarea></label><label>ملاحظات التوصيل<textarea name="shipping_note" rows="2" placeholder="مثال: نؤكد تكلفة التوصيل حسب الولاية قبل الشحن."></textarea></label><button class="btn primary">حفظ الإعدادات</button></form></section>
   </div></div>
   <div class="toast" id="toast" role="status"></div>
-  <script src="config.js"></script><script src="app.js"></script>
+  <script src="config.js"></script><script src="app.js"></script><script src="interactions.js"></script>
 </body></html>
