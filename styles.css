@@ -1408,3 +1408,52 @@ main .standard-visual-note>div>ul li{
   #notebook-request>.section-heading.align-start{position:static!important}
   #notebook-request .standard-visual-note>img{max-height:250px!important}
 }
+
+
+/* LAMSETI trust strip: restore the blush-and-berry palette */
+.trust-strip{
+  background:linear-gradient(110deg,#fff3f5 0%,#f8edf4 52%,#f1ebf7 100%)!important;
+  border:1px solid #efd9e3!important;
+  border-radius:16px!important;
+  box-shadow:0 14px 34px rgba(113,59,89,.08)!important;
+}
+.trust-strip article{
+  background:transparent!important;
+  border:0!important;
+}
+.trust-strip article+article{
+  border-right:1px solid #e8d5df!important;
+}
+.trust-strip article:before{display:none!important;content:none!important}
+.trust-strip b{
+  color:#713b59!important;
+  font-weight:800!important;
+}
+.trust-strip small,
+.trust-strip article div small{
+  color:#927b89!important;
+}
+.trust-strip .trust-icon{
+  display:grid!important;
+  place-items:center!important;
+  width:54px!important;
+  height:54px!important;
+  flex:0 0 54px!important;
+  border:1px solid #e9cbd8!important;
+  border-radius:50%!important;
+  background:#fff9fb!important;
+  color:#a94772!important;
+}
+.trust-strip .trust-icon svg{
+  width:23px!important;
+  height:23px!important;
+  stroke:currentColor!important;
+}
+@media(max-width:850px){
+  .trust-strip article+article{border-right:0!important}
+  .trust-strip article:nth-child(3),
+  .trust-strip article:nth-child(4){border-top:1px solid #e8d5df!important}
+}
+@media(max-width:600px){
+  .trust-strip{background:linear-gradient(145deg,#fff3f5,#f1ebf7)!important}
+}
