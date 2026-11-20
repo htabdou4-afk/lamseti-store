@@ -1,7 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470">
-<defs><linearGradient id="navy" x2="1" y2="1"><stop stop-color="#3d5c7c"/><stop offset="1" stop-color="#101a30"/></linearGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#ffe4a0"/><stop offset="1" stop-color="#c58a35"/></linearGradient><linearGradient id="teal" x2="1" y2="1"><stop stop-color="#a1e4d4"/><stop offset="1" stop-color="#409d99"/></linearGradient><linearGradient id="coral" x2="1" y2="1"><stop stop-color="#ffb493"/><stop offset="1" stop-color="#d65d70"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="17"/></filter></defs>
-<ellipse cx="360" cy="408" rx="245" ry="24" fill="#000" opacity=".38" filter="url(#shadow)"/><circle cx="130" cy="90" r="58" fill="#e7b95e" opacity=".13"/><circle cx="585" cy="335" r="60" fill="#5ab8b0" opacity=".13"/>
-<g transform="rotate(-9 365 245)"><rect x="145" y="178" width="440" height="238" rx="18" fill="#091323" stroke="#b98237" stroke-width="4"/><rect x="165" y="144" width="440" height="238" rx="18" fill="url(#navy)" stroke="url(#gold)" stroke-width="4"/><path d="M192 173h385" stroke="#e5c17a" stroke-width="3" opacity=".6"/><path d="M215 238l38-38 38 38-38 38z" fill="none" stroke="url(#teal)" stroke-width="7"/><path d="M242 238h22m-11-11v22" stroke="#f7d995" stroke-width="4" stroke-linecap="round"/><rect x="324" y="213" width="220" height="13" rx="6" fill="#fff0d1"/><rect x="324" y="241" width="158" height="9" rx="4" fill="#a9c3d1"/><path d="M211 315h160M211 337h115" stroke="#e6c17a" stroke-width="6" stroke-linecap="round"/><circle cx="536" cy="326" r="20" fill="url(#coral)"/></g>
-<g transform="rotate(12 180 145)"><rect x="52" y="73" width="250" height="143" rx="14" fill="#f7e9d0" stroke="#fff2d8" stroke-width="4"/><rect x="76" y="98" width="59" height="59" rx="11" fill="url(#coral)"/><path d="M157 111h120M157 133h92M77 180h200" stroke="#b6a88f" stroke-width="6" stroke-linecap="round"/><circle cx="108" cy="127" r="12" fill="#ffe3a0"/></g>
-<g transform="rotate(16 580 115)"><rect x="526" y="52" width="108" height="108" rx="15" fill="url(#teal)"/><path d="M550 76h60v60h-60zM560 86h13v13h-13zm25 0h13v13h-13zm-25 25h13v13h-13zm25 0h13v13h-13z" fill="#18344b"/></g>
-<path d="M465 62l11 23 25 4-18 17 4 25-22-12-22 12 4-25-18-17 25-4z" fill="#f4c761"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+<title id="title">بطاقات أعمال LAMSETI القياسية</title><desc id="desc">مجموعة بطاقات أعمال أنيقة بلون عاجي وأخضر داكن مع تفاصيل ذهبية على سطح استوديو.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f1eee7"/><stop offset="1" stop-color="#dce5df"/></linearGradient>
+ <linearGradient id="green" x2="1" y2="1"><stop stop-color="#315e59"/><stop offset="1" stop-color="#153a35"/></linearGradient>
+ <linearGradient id="foil" x2="1" y2="1"><stop stop-color="#f4dfad"/><stop offset=".5" stop-color="#bb8b4b"/><stop offset="1" stop-color="#f7e8c7"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="170%" height="180%"><feGaussianBlur stdDeviation="17"/></filter>
+ <pattern id="paper" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 3h12" stroke="#d8d0c1" stroke-opacity=".22"/></pattern>
+</defs>
+<rect width="900" height="620" rx="28" fill="url(#bg)"/>
+<circle cx="140" cy="120" r="95" fill="#fff" opacity=".3"/><path d="M0 490Q190 430 350 505T680 500T900 470V620H0Z" fill="#d1ddd5" opacity=".5"/>
+<g fill="none" stroke="#8ba398" stroke-width="2" opacity=".55"><path d="M760 100q-55 22-58 75t-45 52"/><path d="M700 150q-40-30-64-5m69-5q32-36 60-30"/><path d="M115 450q35-35 70-8"/></g>
+<ellipse cx="455" cy="380" rx="330" ry="135" fill="#243a34" opacity=".2" filter="url(#shadow)"/>
+<!-- lower stack -->
+<g transform="rotate(8 455 365)">
+ <rect x="190" y="255" width="535" height="290" rx="14" fill="#c5bda9" opacity=".7"/>
+ <rect x="190" y="245" width="535" height="290" rx="14" fill="#fdfbf5" stroke="#d6cebf" stroke-width="2"/>
+ <rect x="190" y="245" width="535" height="290" rx="14" fill="url(#paper)"/>
+ <path d="M220 275h475v230H220z" fill="none" stroke="#d8d0c1" stroke-width="1.5"/>
+ <circle cx="280" cy="330" r="25" fill="none" stroke="#47756b" stroke-width="3"/><path d="M267 330h26m-13-13v26" stroke="#b78a4b" stroke-width="2"/>
+ <text x="330" y="326" fill="#1d403a" font-family="Georgia,serif" font-size="28" letter-spacing="3">YOUR BRAND</text>
+ <text x="330" y="354" fill="#71847a" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">CREATIVE STUDIO</text>
+ <path d="M250 420h410" stroke="#c4b79f" stroke-width="2"/>
+ <text x="250" y="455" fill="#526c64" font-family="Arial,sans-serif" font-size="14">hello@yourbrand.com</text>
+ <text x="250" y="482" fill="#526c64" font-family="Arial,sans-serif" font-size="14">+213 000 000 000</text>
+</g>
+<!-- top dark card -->
+<g transform="rotate(-9 440 235)">
+ <rect x="170" y="95" width="540" height="300" rx="15" fill="#0e2925" opacity=".32"/>
+ <rect x="158" y="82" width="540" height="300" rx="15" fill="url(#green)" stroke="#d0ad70" stroke-width="2.5"/>
+ <path d="M180 105h496v254H180z" fill="none" stroke="#d6b77d" stroke-width="1.5" opacity=".8"/>
+ <path d="M158 300l175-218h365L523 382H158z" fill="#fff" opacity=".035"/>
+ <g transform="translate(285 168)" fill="none" stroke="url(#foil)" stroke-width="3"><path d="M0 40l34-34 34 34-34 34z"/><path d="M34 18v44M12 40h44"/></g>
+ <text x="390" y="205" fill="#f6e7c8" font-family="Georgia,serif" font-size="39" letter-spacing="5">LAMSETI</text>
+ <text x="390" y="238" fill="#d8c39c" font-family="Arial,sans-serif" font-size="13" letter-spacing="4">PRINT · DESIGN · CREATE</text>
+ <path d="M390 270h185" stroke="url(#foil)" stroke-width="1.5"/>
+ <text x="390" y="302" fill="#f4e7cf" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">YOUR NAME</text>
+ <text x="390" y="326" fill="#d7c7a8" font-family="Arial,sans-serif" font-size="12">FOUNDER / DESIGNER</text>
+</g>
+<text x="68" y="565" fill="#55746b" font-family="Arial,sans-serif" font-size="15" letter-spacing="4">PREMIUM BUSINESS CARDS · PRINT READY</text>
+</svg>
