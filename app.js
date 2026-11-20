@@ -69,7 +69,7 @@
     if(e.target.id!=="checkoutForm")return;
     e.preventDefault();
     if(!requireBackend())return;
-    const submitButton=e.target.querySelector('button[type="submit"]');
+    const submitButton=e.target.querySelector('button:not([type="button"])');
     if(submitButton?.disabled)return;
     const f=Object.fromEntries(new FormData(e.target));
     const items=cart.map(c=>{
@@ -107,7 +107,7 @@ ${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`)
       form.elements.quantity?.focus();
       return;
     }
-    const submitButton=form.querySelector('button[type="submit"]');
+    const submitButton=form.querySelector('button:not([type="button"])');
     if(submitButton?.disabled)return;
     const waWindow=prepareWhatsAppWindow();
     const common={
@@ -143,7 +143,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   $("adminOpen").addEventListener("click",()=>{if(!requireBackend())return;if(currentUser)openAdmin();else modal("authModal");});
   $("loginForm").addEventListener("submit",async e=>{
     e.preventDefault(); if(!requireBackend())return;
-    const form=e.currentTarget,button=form.querySelector('button[type="submit"]'),f=Object.fromEntries(new FormData(form));
+    const form=e.currentTarget,button=form.querySelector('button:not([type="button"])'),f=Object.fromEntries(new FormData(form));
     if(button?.disabled)return;
     if(button){button.disabled=true;button.textContent="جارٍ التحقق...";}
     $("authMessage").textContent="";
@@ -166,7 +166,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   $("productForm").addEventListener("submit",async e=>{
     e.preventDefault();
     if(!requireBackend())return;
-    const form=e.currentTarget,button=form.querySelector('button[type="submit"]');
+    const form=e.currentTarget,button=form.querySelector('button:not([type="button"])');
     if(button?.disabled)return;
     const fd=new FormData(form),id=String(fd.get("id")||"");
     const name=String(fd.get("name")||"").trim(),price=Number(fd.get("price"));
@@ -197,10 +197,10 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
       toast("تعذر حفظ المنتج. تحقق من الاتصال والصلاحيات.");console.error("Product save failed",error);
     } finally {if(button){button.disabled=false;button.textContent="حفظ المنتج";}}
   });
-  async function loadOrders(){const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false}).limit(100);if(error){$("adminOrderList").textContent="تعذر تحميل الطلبات.";return;}const labels={new:"جديد",confirmed:"تم التأكيد",in_production:"قيد الإنجاز",ready:"جاهز",shipped:"تم الشحن",delivered:"تم التسليم",cancelled:"ملغي"};$("adminOrderList").innerHTML=(data||[]).map(o=>`<article class="admin-row" style="align-items:flex-start"><div style="min-width:0;flex:1"><b>#${o.id} · ${escapeHtml(o.customer_name)}</b><br>${escapeHtml(o.order_type)} · ${escapeHtml(o.phone)} · ${escapeHtml(o.wilaya||"")} / ${escapeHtml(o.city||"")}<br><small>${new Date(o.created_at).toLocaleString("ar-DZ")} · ${money(o.total_amount)}</small><details><summary>تفاصيل الطلب</summary><pre style="white-space:pre-wrap;font:12px inherit">${escapeHtml(JSON.stringify(o.order_type==="cart"?o.items:o.custom_details,null,2))}\n${escapeHtml(o.notes||"")}</pre></details></div><select class="status-select" data-order-status="${o.id}">${Object.entries(labels).map(([v,l])=>`<option value="${v}" ${o.status===v?"selected":""}>${l}</option>`).join("")}</select></article>`).join("")||"لا توجد طلبات حتى الآن.";}
+  async function loadOrders(){const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false}).limit(100);if(error){$("adminOrderList").textContent="تعذر تحميل الطلبات.";return;}const labels={new:"جديد",confirmed:"تم التأكيد",in_production:"قيد الإنجاز",ready:"جاهز",shipped:"تم الشحن",delivered:"تم التسليم",cancelled:"ملغي"};$("adminOrderList").innerHTML=(data||[]).map(o=>`<article class="admin-row" style="align-items:flex-start"><div style="min-width:0;flex:1"><b>#${o.id} · ${escapeHtml(o.customer_name)}</b><br>${escapeHtml(o.order_type)} · ${escapeHtml(o.phone)} · ${escapeHtml(o.wilaya||"")} / ${escapeHtml(o.city||"")}<br><small>${new Date(o.created_at).toLocaleString("ar-DZ")} · ${money(o.total_amount)}</small><details><summary>تفاصيل الطلب</summary><pre style="white-space:pre-wrap;font:12px inherit">${escapeHtml(JSON.stringify(o.order_type==="cart"?o.items:o.custom_details,null,2))}\n${escapeHtml(o.notes||"")}</pre></details></div><select class="status-select" data-order-status="${o.id}" data-previous-status="${o.status}">${Object.entries(labels).map(([v,l])=>`<option value="${v}" ${o.status===v?"selected":""}>${l}</option>`).join("")}</select></article>`).join("")||"لا توجد طلبات حتى الآن.";}
   $("adminOrderList").addEventListener("change",async e=>{
     const s=e.target.closest("[data-order-status]"); if(!s)return;
-    const previous=s.dataset.previousStatus||s.value; s.disabled=true;
+    const previous=s.dataset.previousStatus; s.disabled=true;
     try {
       const {data,error}=await supabase.from("orders").update({status:s.value}).eq("id",s.dataset.orderStatus).select("id").maybeSingle();
       if(error||!data)throw error||new Error("Order not updated");
@@ -211,7 +211,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   });
   async function loadAdminSettings(){const f=$("settingsForm");Object.entries(settings).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v||"";});}
   $("settingsForm").addEventListener("submit",async e=>{
-    e.preventDefault(); const form=e.currentTarget,button=form.querySelector('button[type="submit"]');
+    e.preventDefault(); const form=e.currentTarget,button=form.querySelector('button:not([type="button"])');
     if(button?.disabled)return;
     const row=Object.fromEntries(new FormData(form)); row.id=1;
     if(!/^213\\d{8,9}$/.test(String(row.whatsapp||"").replace(/\\D/g,"")) && row.whatsapp.trim()){
