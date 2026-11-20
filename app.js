@@ -1,4 +1,4 @@
-/* LAMSETI production frontend. Public anon key only. Never put service_role key here. */
+/* LAMSETI production frontend. Public publishable key only. Never put a secret/service_role key here. */
 (() => {
   const cfg = window.LAMSETI_CONFIG || {};
   const configured = cfg.SUPABASE_URL && !cfg.SUPABASE_URL.includes("YOUR-") &&
@@ -13,10 +13,10 @@
 
   function toast(msg) { const el=$("toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),3200); }
   function modal(id, open=true) { $(id).classList.toggle("open",open); $(id).setAttribute("aria-hidden",String(!open)); }
-  function requireBackend() { if (!supabase) { toast("الموقع في وضع المعاينة. أكمل إعداد Supabase حسب دليل التشغيل لتفعيل الطلبات والإدارة."); return false; } return true; }
+  function requireBackend() { if (!supabase) { toast("تعذر الاتصال بقاعدة البيانات. تحقق من إعدادات الاتصال."); return false; } return true; }
   function saveCart() { localStorage.setItem("lamseti_cart",JSON.stringify(cart)); updateCartCount(); }
   function updateCartCount() { $("cartCount").textContent=cart.reduce((n,x)=>n+x.qty,0); }
-  function waUrl(message) { const phone=(settings.whatsapp||"").replace(/\D/g,""); if(!/^213\d{8,9}$/.test(phone)){toast("لم يتم ضبط رقم واتساب المتجر بعد. يمكنك إرسال الطلب من قاعدة البيانات وسنحتاج لإضافة الرقم في إعدادات المالك.");return null;} return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`; }
+  function waUrl(message) { const phone=(settings.whatsapp||"").replace(/\D/g,""); if(!/^213\d{8,9}$/.test(phone)){toast("لم يتم ضبط رقم واتساب المتجر بعد. تم حفظ الطلب ويمكنك ضبط الرقم من إعدادات الإدارة.");return null;} return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`; }
   async function loadSettings() {
     if (!supabase) return;
     const {data,error}=await supabase.from("store_settings").select("*").eq("id",1).maybeSingle();
@@ -49,17 +49,18 @@
   $("cartOpen").addEventListener("click",openCart);
   $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
   $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return {product_id:c.id,name:p?.name,unit_price:p?.price,quantity:c.qty};}),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);
-    const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
-    const {data,error}=await supabase.from("orders").insert(order).select("id").single();if(error){toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
-    const msg=`طلب جديد من ${settings.store_name}\nرقم الطلب: ${data.id}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
+    const orderId=crypto.randomUUID();
+    const order={id:orderId,order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
+    const {error}=await supabase.from("orders").insert(order);if(error){toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
+    const msg=`طلب جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
   });
   async function submitCustom(form, type) {
     if(!requireBackend())return;
-    const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
-    const {data,error}=await supabase.from("orders").insert(common).select("id").single();
+    const fields=Object.fromEntries(new FormData(form)),orderId=crypto.randomUUID();const common={id:orderId,customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
+    const {error}=await supabase.from("orders").insert(common);
     if(error){toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}
-    const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${data.id}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
+    const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");const url=waUrl(msg);if(url)window.open(url,"_blank","noopener");
   }
   $("notebookForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"notebook");});
@@ -88,7 +89,6 @@
   if(supabase){supabase.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;});supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});}
   $("year").textContent=new Date().getFullYear();updateCartCount();
   Promise.all([loadSettings(),loadProducts()]);
-  // Highlight active section in the navigation.
   const links=[...document.querySelectorAll('.main-nav a')],sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
   if("IntersectionObserver" in window){const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));}}),{rootMargin:"-30% 0px -60% 0px"});sections.forEach(s=>io.observe(s));}
 })();
