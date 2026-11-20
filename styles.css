@@ -1255,15 +1255,19 @@ main .standard-visual-note>div>ul li{
 }
 
 
-/* LAMSETI custom artwork: warm gold typography trial */
+/* LAMSETI custom artwork: gold lettering with crisp dark outlines */
 main .standard-visual-note>div>b{
-  color:#9b6b27!important;
-  text-shadow:0 1px 0 rgba(255,255,255,.28)!important;
+  color:#c18a2e!important;
+  -webkit-text-stroke:1px #211820!important;
+  paint-order:stroke fill!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.18)!important;
 }
 main .standard-visual-note>div>span,
 main .standard-visual-note>div>ul,
 main .standard-visual-note>div>ul li{
-  color:#80591f!important;
-  font-weight:600!important;
-  text-shadow:none!important;
+  color:#a97825!important;
+  -webkit-text-stroke:.55px #211820!important;
+  paint-order:stroke fill!important;
+  font-weight:700!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.14)!important;
 }
