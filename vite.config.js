@@ -1,11 +1,23 @@
+import { copyFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
+const rootFile = name => fileURLToPath(new URL(`./${name}`, import.meta.url));
+
+const copyProductImages = {
+  name: "copy-lamseti-product-images",
+  closeBundle() {
+    mkdirSync(rootFile("./dist/"), { recursive: true });
+    ["pink-notebook.jpg", "blue-notebook.jpg", "collection.jpg", "notebooks-set.jpg"]
+      .forEach(name => copyFileSync(rootFile(name), rootFile(`./dist/${name}`)));
+  }
+};
+
 export default defineConfig({
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), copyProductImages],
   build: {
     outDir: "dist",
     emptyOutDir: true,
