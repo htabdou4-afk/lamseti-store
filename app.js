@@ -60,12 +60,38 @@
   });
   async function submitCustom(form, type) {
     if(!requireBackend())return;
+    const fields=Object.fromEntries(new FormData(form));
+    const quantity=Number(fields.quantity);
+    const minQuantity=type==="business_cards"?50:1;
+    const maxQuantity=type==="business_cards"?50000:500;
+    if(!Number.isInteger(quantity)||quantity<minQuantity||quantity>maxQuantity){
+      toast(`الكمية يجب أن تكون رقماً صحيحاً بين ${minQuantity} و${maxQuantity}.`);
+      form.elements.quantity?.focus();
+      return;
+    }
+    const submitButton=form.querySelector('button[type="submit"]');
+    if(submitButton?.disabled)return;
     const waWindow=prepareWhatsAppWindow();
-    const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
-    const {data:savedOrder,error}=await supabase.from("orders").insert(common).select("id").single();
-    if(error){waWindow?.close();toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
-    const msg=`طلب مخصص جديد من ${settings.store_name}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
-    form.reset();if(submitButton){submitButton.disabled=false;submitButton.textContent=type==="notebook"?"إرسال طلب الدفتر المخصص":"إرسال طلب بطاقات الأعمال";}toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");finishWhatsAppWindow(waWindow,msg);
+    const common={
+      customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,
+      city:fields.city,
+      delivery_address:type==="notebook"?fields.address:fields.delivery_address,
+      order_type:type,custom_details:fields,status:"new"
+    };
+    if(submitButton){submitButton.disabled=true;submitButton.dataset.originalText=submitButton.textContent;submitButton.textContent="جارٍ إرسال الطلب...";}
+    const {error}=await supabase.from("orders").insert(common);
+    if(error){
+      waWindow?.close();
+      if(submitButton){submitButton.disabled=false;submitButton.textContent=submitButton.dataset.originalText||"إرسال الطلب";}
+      toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;
+    }
+    const msg=`طلب مخصص جديد من ${settings.store_name}
+النوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}
+${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
+    form.reset();
+    if(submitButton){submitButton.disabled=false;submitButton.textContent=submitButton.dataset.originalText||"إرسال الطلب";}
+    toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");
+    finishWhatsAppWindow(waWindow,msg);
   }
   $("notebookForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"notebook");});
   $("businessForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"business_cards");});
