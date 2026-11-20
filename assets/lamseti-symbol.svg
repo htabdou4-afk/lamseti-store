@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LAMSETI symbol">
+  <rect x="2" y="2" width="60" height="60" rx="13" fill="#142b38"/>
+  <path d="M17 17h21c5 0 9 4 9 9v22H26c-5 0-9-4-9-9V17Z" fill="none" stroke="#f8f5ed" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M17 17v22c0 5 4 9 9 9h21" fill="none" stroke="#c8a878" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="m39 12 7 7-7 7-7-7 7-7Z" fill="#4e9994"/>
+  <path d="M27 29h11M27 35h14" stroke="#f8f5ed" stroke-width="2" stroke-linecap="round"/>
+</svg>
