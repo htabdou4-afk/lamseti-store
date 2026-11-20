@@ -9,7 +9,7 @@
   const imageSrc = value => { const src=String(value||"notebooks-set.jpg"); return /^assets\/(?:pink-notebook|blue-notebook|collection|notebooks-set)\.jpg$/.test(src) ? src.slice(7) : src; };
   const escapeHtml = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let products = [], settings = {store_name:"LAMSETI", whatsapp:"", order_message:"شكراً لطلبك من LAMSETI.", shipping_note:"يتم تأكيد تكلفة التوصيل حسب الولاية قبل الشحن."};
-  let cart = JSON.parse(localStorage.getItem("lamseti_cart") || "[]");
+  let cart = (() => { try { const value=JSON.parse(localStorage.getItem("lamseti_cart") || "[]"); return Array.isArray(value) ? value.filter(x=>x && x.id!=null && Number.isFinite(Number(x.qty)) && Number(x.qty)>0).map(x=>({id:String(x.id),qty:Math.min(99,Math.max(1,Math.floor(Number(x.qty))))})) : []; } catch { return []; } })();
   let currentUser = null, toastTimer;
 
   function toast(msg) { const el=$("toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),3200); }
@@ -51,11 +51,11 @@
   }
   $("cartOpen").addEventListener("click",openCart);
   $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
-  $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return {product_id:c.id,name:p?.name,unit_price:p?.price,quantity:c.qty};}),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);
+  $("cartContent").addEventListener("submit",async e=>{if(e.target.id!=="checkoutForm")return;e.preventDefault();if(!requireBackend())return;const f=Object.fromEntries(new FormData(e.target)),items=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));return p?{product_id:c.id,name:p.name,unit_price:Number(p.price)||0,quantity:c.qty}:null;}).filter(Boolean),total=items.reduce((s,x)=>s+x.unit_price*x.quantity,0);if(!items.length){toast("السلة فارغة أو لم تعد المنتجات متاحة.");cart=[];saveCart();openCart();return;}
     const waWindow=prepareWhatsAppWindow();
     const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
-    const {data:savedOrder,error}=await supabase.from("orders").insert(order).select("id").single();if(error){waWindow?.close();toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
-    const msg=`طلب جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
+    const {error}=await supabase.from("orders").insert(order);if(error){waWindow?.close();toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
+    const msg=`طلب جديد من ${settings.store_name}\n${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}\nالمجموع دون التوصيل: ${money(total)}\nالاسم: ${f.customer_name}\nالهاتف: ${f.phone}\nالعنوان: ${f.wilaya} - ${f.city} - ${f.address}\nملاحظات: ${f.notes||"لا يوجد"}`;
     cart=[];saveCart();modal("cartModal",false);toast("تم تسجيل طلبك بنجاح.");finishWhatsAppWindow(waWindow,msg);
   });
   async function submitCustom(form, type) {
@@ -64,8 +64,8 @@
     const fields=Object.fromEntries(new FormData(form));const common={customer_name:fields.customer_name,phone:fields.phone,wilaya:fields.wilaya,city:fields.city,delivery_address:type==="notebook"?fields.address:fields.delivery_address,order_type:type,custom_details:fields,status:"new"};
     const {data:savedOrder,error}=await supabase.from("orders").insert(common).select("id").single();
     if(error){waWindow?.close();toast("تعذر إرسال الطلب. حاول مجدداً.");console.error(error);return;}const orderId=savedOrder.id;
-    const msg=`طلب مخصص جديد من ${settings.store_name}\nرقم الطلب: ${orderId}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
-    form.reset();toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");finishWhatsAppWindow(waWindow,msg);
+    const msg=`طلب مخصص جديد من ${settings.store_name}\nالنوع: ${type==="notebook"?"دفتر مخصص":"بطاقات أعمال"}\n${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
+    form.reset();if(submitButton){submitButton.disabled=false;submitButton.textContent=type==="notebook"?"إرسال طلب الدفتر المخصص":"إرسال طلب بطاقات الأعمال";}toast("وصل طلبك بنجاح. سنتواصل معك لتأكيد التفاصيل.");finishWhatsAppWindow(waWindow,msg);
   }
   $("notebookForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"notebook");});
   $("businessForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"business_cards");});
