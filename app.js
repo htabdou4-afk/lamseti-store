@@ -153,8 +153,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   }
   $("notebookForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"notebook");});
   $("businessForm").addEventListener("submit",e=>{e.preventDefault();submitCustom(e.target,"business_cards");});
-  $("menuToggle").addEventListener("click",()=>{const open=$("mainNav").classList.toggle("open");$("menuToggle").setAttribute("aria-expanded",String(open));});
-  $("mainNav").addEventListener("click",e=>{if(e.target.closest("a")){$("mainNav").classList.remove("open");$("menuToggle").setAttribute("aria-expanded","false");}});
+  // Mobile navigation handlers are registered once in the responsive interaction block below.
   document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>modal(b.dataset.close,false)));
   document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)modal(m.id,false);}));
   $("adminOpen").addEventListener("click",()=>{if(!requireBackend())return;if(currentUser)openAdmin();else modal("authModal");});
