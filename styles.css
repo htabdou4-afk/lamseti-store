@@ -552,7 +552,7 @@ body{
 .toast{background:#172238;border:1px solid rgba(212,166,74,.3);color:#fff}
 #lamseti-enhancements{display:none}
 .search-box{
- display:none;position:absolute;z-index:30;top:calc(100% + 8px);left:4.2%;
+ display:none;position:fixed;z-index:40;top:98px;left:4.2%;
  width:min(360px,90vw);padding:12px;border:1px solid var(--gold-line);border-radius:11px;
  background:#111a2b;box-shadow:0 18px 45px rgba(0,0,0,.4)
 }
@@ -593,6 +593,7 @@ body{
 }
 @media(max-width:600px){
  .site-header{height:68px;padding-inline:14px}
+ .search-box{top:76px;left:14px}
  .brand-copy{font-size:20px}.brand-copy small{font-size:8px;letter-spacing:1.5px}
  .header-actions{gap:2px}
  .admin-open{width:39px;height:39px;padding:0;justify-content:center;font-size:0}
