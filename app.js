@@ -308,7 +308,11 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
       });
     });
     document.addEventListener("keydown",e=>{
-      if(e.key==="Escape"){searchPanel.classList.remove("open");productSearch.value="";document.querySelectorAll("#productGrid .product-card").forEach(card=>card.hidden=false);}
+      if(e.key==="Escape"){
+        searchPanel.classList.remove("open");
+        productSearch.value="";
+        document.querySelectorAll("#productGrid .product-card").forEach(card=>card.hidden=false);
+      }
     });
   }
   $("year").textContent=new Date().getFullYear();updateCartCount();
