@@ -1507,3 +1507,20 @@ body{position:relative}
   .business-block{width:100%;margin-inline:0}
   img,svg,video,canvas{max-width:100%}
 }
+
+
+/* Inline custom artwork: size SVGs like the former images while preserving interactive internal layers */
+main .standard-visual-note>svg{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:290px!important;
+  margin:0 auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  overflow:visible;
+}
+@media(max-width:760px){
+  main .standard-visual-note>svg{max-height:250px!important}
+}
