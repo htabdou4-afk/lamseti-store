@@ -277,7 +277,51 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     } catch(error){toast("تعذر حفظ الإعدادات.");console.error(error);}
     finally{if(button){button.disabled=false;button.textContent="حفظ الإعدادات";}}
   });
-  if(supabase){supabase.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;});supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});}
+  if(supabase){
+    supabase.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;});
+    supabase.auth.onAuthStateChange((event,session)=>{
+      currentUser=session?.user||null;
+      if(event==="PASSWORD_RECOVERY"){
+        $("passwordResetMessage").textContent="";
+        $("passwordResetForm").reset();
+        modal("passwordResetModal");
+      }
+    });
+  }
+  $("passwordResetForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    if(!requireBackend())return;
+    const form=e.currentTarget,button=form.querySelector('button[type="submit"]');
+    const password=form.elements.password.value;
+    const confirmation=form.elements.confirmPassword.value;
+    $("passwordResetMessage").textContent="";
+    if(password.length<8){
+      $("passwordResetMessage").textContent="كلمة المرور يجب أن تتكون من 8 أحرف على الأقل.";
+      return;
+    }
+    if(password!==confirmation){
+      $("passwordResetMessage").textContent="كلمتا المرور غير متطابقتين.";
+      return;
+    }
+    if(button?.disabled)return;
+    if(button){button.disabled=true;button.textContent="جارٍ تحديث كلمة المرور...";}
+    try{
+      const {data,error}=await supabase.auth.updateUser({password});
+      if(error)throw error;
+      currentUser=data.user||currentUser;
+      modal("passwordResetModal",false);
+      try{await supabase.auth.signOut();}catch(signOutError){console.warn("Post-reset sign-out failed",signOutError);}
+      currentUser=null;
+      $("loginForm").reset();
+      $("authMessage").textContent="تم تغيير كلمة المرور بنجاح. سجّل الدخول الآن بالكلمة الجديدة.";
+      modal("authModal");
+    }catch(error){
+      $("passwordResetMessage").textContent="تعذر تحديث كلمة المرور. اطلب رابط استعادة جديداً وحاول مرة أخرى.";
+      console.error("Password update failed",error);
+    }finally{
+      if(button){button.disabled=false;button.textContent="حفظ كلمة المرور الجديدة";}
+    }
+  });
   const menuToggle=$("menuToggle"), mainNav=$("mainNav");
   if(menuToggle&&mainNav){
     menuToggle.addEventListener("click",()=>{
