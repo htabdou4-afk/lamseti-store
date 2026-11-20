@@ -6,7 +6,18 @@
   const supabase = configured ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
   const $ = id => document.getElementById(id);
   const money = n => `${Number(n || 0).toLocaleString("fr-DZ")} دج`;
-  const categoryArtwork = category => ({notebooks:"assets/category-notebooks.svg",business_cards:"assets/category-business-cards.svg",other:"assets/category-prints.svg"})[String(category||"").toLowerCase()] || "assets/category-custom.svg";
+  const categoryArtwork = category => {
+    const value=String(category||"").trim().toLowerCase();
+    if(value==="business_cards"||value.includes("business")||value.includes("بطاقات")) return "/assets/category-business-cards.svg";
+    if(value==="notebooks"||value.includes("notebook")||value.includes("دفاتر")) return "/assets/category-notebooks.svg";
+    if(value==="other"||value.includes("print")||value.includes("مطبوع")) return "/assets/category-prints.svg";
+    return "/assets/category-custom.svg";
+  };
+  const imageSrc = (value,category) => {
+    const src=String(value||"").trim();
+    const legacy=/^(?:\.\/|\/)?(?:assets\/)?(?:notebooks-set|pink-notebook|blue-notebook|collection)\.jpg$/i;
+    return !src||legacy.test(src) ? categoryArtwork(category) : src;
+  };
   const imageSrc = (value,category) => { const src=String(value||"").trim(); return !src || /^(?:notebooks-set\.jpg|assets\/(?:pink-notebook|blue-notebook|collection|notebooks-set)\.jpg)$/i.test(src) ? categoryArtwork(category) : src; };
   const escapeHtml = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let products = [], settings = {store_name:"LAMSETI", whatsapp:"", order_message:"شكراً لطلبك من LAMSETI.", shipping_note:"يتم تأكيد تكلفة التوصيل حسب الولاية قبل الشحن."};
@@ -25,12 +36,18 @@
   function waUrl(message) { const phone=(settings.whatsapp||"").replace(/\D/g,""); if(!/^213\d{8,9}$/.test(phone)){toast("لم يتم ضبط رقم واتساب المتجر بعد. تم حفظ الطلب ويمكنك ضبط الرقم من إعدادات الإدارة.");return null;} return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`; }
   function prepareWhatsAppWindow() { const phone=(settings.whatsapp||"").replace(/\D/g,""); return /^213\d{8,9}$/.test(phone) ? window.open("about:blank","_blank") : null; }
   function finishWhatsAppWindow(popup,message) { const url=waUrl(message); if(!url){popup?.close();return;} if(popup) popup.location.href=url; else toast("تم حفظ الطلب. تعذر فتح واتساب تلقائياً، يمكنك فتحه يدوياً وإرسال تفاصيل الطلب."); }
+  function updateStoreName(){
+    const name=String(settings.store_name||"LAMSETI").trim()||"LAMSETI";
+    document.querySelectorAll("[data-store-name]").forEach(node=>{node.textContent=name;});
+    document.title=name+" | دفاتر مخصصة وبطاقات أعمال احترافية";
+  }
   async function loadSettings() {
     if (supabase) {
       try {
         const {data,error}=await supabase.from("store_settings").select("*").eq("id",1).maybeSingle();
         if(error) throw error;
         if(data) settings={...settings,...data};
+      updateStoreName();
       } catch(error) { console.error("Settings load failed",error); }
     }
     $("footerContact").textContent=settings.shipping_note||"";
@@ -182,7 +199,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   }
   document.querySelectorAll(".admin-tabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".admin-tabs button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".admin-tab").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.tab));}));
   $("resetProduct").addEventListener("click",()=>{$("productForm").reset();$("productForm").elements.id.value="";$("productFormTitle").textContent="إضافة منتج";});
-  async function loadAdminProducts(){let data,error;try{({data,error}=await supabase.from("products").select("*").order("created_at",{ascending:false}));}catch(err){error=err;}if(error){$("adminProductList").textContent="تعذر تحميل المنتجات.";console.error(error);return;}$("adminProductList").innerHTML=(data||[]).map(p=>`<div class="admin-row"><div class="admin-row-main"><img src="${escapeHtml(imageSrc(p.image_url,p.category))}" alt=""><div><b>${escapeHtml(p.name)}</b><br>${money(p.price)} · ${p.is_active?"منشور":"مخفي"}</div></div><div class="admin-row-actions"><button class="small-action" data-edit-product="${p.id}">تعديل</button><button class="small-action" data-delete-product="${p.id}">حذف</button></div></div>`).join("")||"لا توجد منتجات بعد.";}
+  async function loadAdminProducts(){let data,error;try{({data,error}=await supabase.from("products").select("*").order("created_at",{ascending:false}));}catch(err){error=err;}if(error){$("adminProductList").textContent="تعذر تحميل المنتجات.";console.error(error);return;}$("adminProductList").innerHTML=(data||[]).map(p=>`<div class="admin-row"><div class="admin-row-main"><img loading="lazy" src="${escapeHtml(imageSrc(p.image_url,p.category))}" alt="" onerror="this.onerror=null;this.src='/assets/category-custom.svg'"><div><b>${escapeHtml(p.name)}</b><br>${money(p.price)} · ${p.is_active?"منشور":"مخفي"}</div></div><div class="admin-row-actions"><button class="small-action" data-edit-product="${p.id}">تعديل</button><button class="small-action" data-delete-product="${p.id}">حذف</button></div></div>`).join("")||"لا توجد منتجات بعد.";}
   $("adminProductList").addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-product]"),del=e.target.closest("[data-delete-product]");if(edit){const {data}=await supabase.from("products").select("*").eq("id",edit.dataset.editProduct).single();if(!data)return;const f=$("productForm");["id","name","price","description","image_url","category","is_active"].forEach(k=>{if(f.elements[k])f.elements[k].value=data[k]??"";});$("productFormTitle").textContent="تعديل المنتج";document.querySelector('[data-tab="adminProducts"]').click();$("productForm").scrollIntoView({behavior:"smooth"});}if(del&&confirm("هل تريد حذف هذا المنتج؟")){const {error}=await supabase.from("products").delete().eq("id",del.dataset.deleteProduct);if(error)toast("تعذر حذف المنتج.");else{toast("تم حذف المنتج.");await loadAdminProducts();await loadProducts();}}});
   $("productForm").addEventListener("submit",async e=>{
     e.preventDefault();
@@ -258,7 +275,7 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
     try {
       const {data,error}=await supabase.from("store_settings").update(row).eq("id",1).select("id").maybeSingle();
       if(error||!data)throw error||new Error("Settings row not updated");
-      settings={...settings,...row}; $("footerContact").textContent=settings.shipping_note||""; toast("تم حفظ الإعدادات.");
+      settings={...settings,...row}; updateStoreName(); $("footerContact").textContent=settings.shipping_note||""; toast("تم حفظ الإعدادات.");
     } catch(error){toast("تعذر حفظ الإعدادات.");console.error(error);}
     finally{if(button){button.disabled=false;button.textContent="حفظ الإعدادات";}}
   });
