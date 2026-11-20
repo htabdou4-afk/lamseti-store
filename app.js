@@ -15,7 +15,11 @@
   function toast(msg) { const el=$("toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),3200); }
   function modal(id, open=true) { $(id).classList.toggle("open",open); $(id).setAttribute("aria-hidden",String(!open)); }
   function requireBackend() { if (!supabase) { toast("تعذر الاتصال بقاعدة البيانات. تحقق من إعدادات الاتصال."); return false; } return true; }
-  function saveCart() { localStorage.setItem("lamseti_cart",JSON.stringify(cart)); updateCartCount(); }
+  function saveCart() {
+    try { localStorage.setItem("lamseti_cart",JSON.stringify(cart)); }
+    catch (error) { console.warn("Cart persistence failed.",error); toast("تعذر حفظ السلة محلياً على هذا الجهاز."); }
+    updateCartCount();
+  }
   function updateCartCount() { $("cartCount").textContent=cart.reduce((n,x)=>n+x.qty,0); }
   function waUrl(message) { const phone=(settings.whatsapp||"").replace(/\D/g,""); if(!/^213\d{8,9}$/.test(phone)){toast("لم يتم ضبط رقم واتساب المتجر بعد. تم حفظ الطلب ويمكنك ضبط الرقم من إعدادات الإدارة.");return null;} return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`; }
   function prepareWhatsAppWindow() { const phone=(settings.whatsapp||"").replace(/\D/g,""); return /^213\d{8,9}$/.test(phone) ? window.open("about:blank","_blank") : null; }
@@ -42,15 +46,25 @@
   function renderProducts() {
     $("productGrid").innerHTML=products.length?products.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${escapeHtml(imageSrc(p.image_url))}" alt="${escapeHtml(p.name)}" onerror="this.onerror=null;this.src='notebooks-set.jpg'"></div><div class="product-info"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"منتج من LAMSETI، تواصل معنا لتفاصيل التخصيص.")}</p><div class="product-price">${money(p.price)}</div><button class="btn primary" data-add="${escapeHtml(p.id)}">أضف إلى السلة</button></div></article>`).join(""):'<div class="empty">لا توجد منتجات منشورة حالياً. يمكنك إرسال طلب مخصص.</div>';
   }
-  $("productGrid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=b.dataset.add,p=products.find(x=>String(x.id)===String(id));if(!p)return;const line=cart.find(x=>String(x.id)===String(id));if(line)line.qty++;else cart.push({id,qty:1});saveCart();toast("أضيف المنتج إلى السلة.");});
+  $("productGrid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=b.dataset.add,p=products.find(x=>String(x.id)===String(id));if(!p)return;const line=cart.find(x=>String(x.id)===String(id));if(line){if(line.qty>=99){toast("الحد الأقصى 99 قطعة من المنتج الواحد.");return;}line.qty++;}
+    else cart.push({id,qty:1});
+    saveCart();toast("أضيف المنتج إلى السلة.");});
   function openCart() {
+    const validIds=new Set(products.map(p=>String(p.id)));
+    const oldLength=cart.length;
+    cart=cart.filter(c=>validIds.has(String(c.id)));
+    if(cart.length!==oldLength)saveCart();
     const rows=cart.map(c=>{const p=products.find(x=>String(x.id)===String(c.id));if(!p)return "";return `<div class="cart-line"><div><b>${escapeHtml(p.name)}</b><br><span>${money(p.price)} للوحدة</span></div><div class="qty-controls"><button data-qty="${escapeHtml(p.id)}" data-delta="-1">−</button><b>${c.qty}</b><button data-qty="${escapeHtml(p.id)}" data-delta="1">+</button></div></div>`;}).join("");
     const total=cart.reduce((sum,c)=>sum+(Number(products.find(p=>String(p.id)===String(c.id))?.price)||0)*c.qty,0);
     $("cartContent").innerHTML=`<h2>سلة المشتريات</h2>${rows||'<div class="empty">السلة فارغة حالياً.</div>'}${rows?`<div class="cart-total"><span>المجموع (دون التوصيل)</span><span>${money(total)}</span></div><p class="form-note">${escapeHtml(settings.shipping_note||"يتم تأكيد التوصيل حسب المنطقة.")}</p><form id="checkoutForm"><div class="form-grid"><label>الاسم الكامل *<input name="customer_name" required></label><label>رقم الهاتف *<input name="phone" required type="tel"></label><label>الولاية *<input name="wilaya" required></label><label>البلدية *<input name="city" required></label><label class="full">عنوان التوصيل *<textarea name="address" required rows="2"></textarea></label><label class="full">ملاحظات<textarea name="notes" rows="2"></textarea></label></div><button class="btn primary full-btn">تأكيد الطلب</button></form>`:""}`;
     modal("cartModal");
   }
   $("cartOpen").addEventListener("click",openCart);
-  $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line)line.qty+=delta;cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
+  $("cartContent").addEventListener("click",e=>{const b=e.target.closest("[data-qty]");if(!b)return;const id=b.dataset.qty,delta=Number(b.dataset.delta),line=cart.find(x=>String(x.id)===String(id));if(line){
+      if(delta>0&&line.qty>=99){toast("الحد الأقصى 99 قطعة من المنتج الواحد.");return;}
+      line.qty+=delta;
+    }
+    cart=cart.filter(x=>x.qty>0);saveCart();openCart();});
   $("cartContent").addEventListener("submit",async e=>{
     if(e.target.id!=="checkoutForm")return;
     e.preventDefault();
@@ -67,7 +81,10 @@
     const waWindow=prepareWhatsAppWindow();
     const order={order_type:"cart",customer_name:f.customer_name,phone:f.phone,wilaya:f.wilaya,city:f.city,delivery_address:f.address,notes:f.notes,items,total_amount:total,status:"new"};
     if(submitButton){submitButton.disabled=true;submitButton.textContent="جارٍ تسجيل الطلب...";}
-    const {error}=await supabase.from("orders").insert(order);
+    let result;
+    try { result=await supabase.from("orders").insert(order); }
+    catch(error) { result={error}; }
+    const {error}=result;
     if(error){waWindow?.close();if(submitButton){submitButton.disabled=false;submitButton.textContent="تأكيد الطلب";}toast("تعذر حفظ الطلب. تحقق من الاتصال وحاول مجدداً.");console.error(error);return;}
     const msg=`طلب جديد من ${settings.store_name}
 ${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`).join("\n")}
@@ -99,7 +116,10 @@ ${items.map(x=>`${x.name} × ${x.quantity} = ${money(x.unit_price*x.quantity)}`)
       order_type:type,custom_details:fields,status:"new"
     };
     if(submitButton){submitButton.disabled=true;submitButton.dataset.originalText=submitButton.textContent;submitButton.textContent="جارٍ إرسال الطلب...";}
-    const {error}=await supabase.from("orders").insert(common);
+    let result;
+    try { result=await supabase.from("orders").insert(common); }
+    catch(error) { result={error}; }
+    const {error}=result;
     if(error){
       waWindow?.close();
       if(submitButton){submitButton.disabled=false;submitButton.textContent=submitButton.dataset.originalText||"إرسال الطلب";}
@@ -128,7 +148,9 @@ ${Object.entries(fields).map(([k,v])=>`${k}: ${v}`).join("\n")}`;
   $("resetProduct").addEventListener("click",()=>{$("productForm").reset();$("productForm").elements.id.value="";$("productFormTitle").textContent="إضافة منتج";});
   async function loadAdminProducts(){const {data,error}=await supabase.from("products").select("*").order("created_at",{ascending:false});if(error){$("adminProductList").textContent="تعذر تحميل المنتجات.";return;}$("adminProductList").innerHTML=(data||[]).map(p=>`<div class="admin-row"><div class="admin-row-main"><img src="${escapeHtml(imageSrc(p.image_url))}" alt=""><div><b>${escapeHtml(p.name)}</b><br>${money(p.price)} · ${p.is_active?"منشور":"مخفي"}</div></div><div class="admin-row-actions"><button class="small-action" data-edit-product="${p.id}">تعديل</button><button class="small-action" data-delete-product="${p.id}">حذف</button></div></div>`).join("")||"لا توجد منتجات بعد.";}
   $("adminProductList").addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-product]"),del=e.target.closest("[data-delete-product]");if(edit){const {data}=await supabase.from("products").select("*").eq("id",edit.dataset.editProduct).single();if(!data)return;const f=$("productForm");["id","name","price","description","image_url","category","is_active"].forEach(k=>{if(f.elements[k])f.elements[k].value=data[k]??"";});$("productFormTitle").textContent="تعديل المنتج";document.querySelector('[data-tab="adminProducts"]').click();$("productForm").scrollIntoView({behavior:"smooth"});}if(del&&confirm("هل تريد حذف هذا المنتج؟")){const {error}=await supabase.from("products").delete().eq("id",del.dataset.deleteProduct);if(error)toast("تعذر حذف المنتج.");else{toast("تم حذف المنتج.");await loadAdminProducts();await loadProducts();}}});
-  $("productForm").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,fd=new FormData(f),id=fd.get("id");let imageUrl=fd.get("image_url")||null;const file=f.elements.image.files[0];if(file){if(file.size>5*1024*1024){toast("حجم الصورة يجب ألا يتجاوز 5 ميغابايت.");return;}const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");const path=`${crypto.randomUUID()}.${ext}`;const {error:upErr}=await supabase.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type});if(upErr){toast("تعذر رفع الصورة. تحقق من إعداد Storage.");console.error(upErr);return;}const {data}=supabase.storage.from("product-images").getPublicUrl(path);imageUrl=data.publicUrl;}
+  $("productForm").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,fd=new FormData(f),id=fd.get("id");let imageUrl=fd.get("image_url")||null;const file=f.elements.image.files[0];if(file){
+    if(!["image/jpeg","image/png","image/webp"].includes(file.type)){toast("صيغة الصورة يجب أن تكون JPG أو PNG أو WebP.");return;}
+    if(file.size>5*1024*1024){toast("حجم الصورة يجب ألا يتجاوز 5 ميغابايت.");return;}const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");const path=`${crypto.randomUUID()}.${ext}`;const {error:upErr}=await supabase.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type});if(upErr){toast("تعذر رفع الصورة. تحقق من إعداد Storage.");console.error(upErr);return;}const {data}=supabase.storage.from("product-images").getPublicUrl(path);imageUrl=data.publicUrl;}
     const row={name:fd.get("name"),price:Number(fd.get("price")),description:fd.get("description"),image_url:imageUrl||"notebooks-set.jpg",category:fd.get("category"),is_active:fd.get("is_active")==="true"};
     const q=id?supabase.from("products").update(row).eq("id",id):supabase.from("products").insert(row);const {error}=await q;if(error){toast("تعذر حفظ المنتج.");console.error(error);return;}f.reset();f.elements.id.value="";$("productFormTitle").textContent="إضافة منتج";toast("تم حفظ المنتج.");await loadAdminProducts();await loadProducts();
   });
