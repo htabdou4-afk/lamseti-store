@@ -20,7 +20,7 @@
 <body>
   <div class="announcement">دفاتر مخصصة • بطاقات أعمال احترافية • خدمات للأفراد والمحلات والمؤسسات</div>
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="LAMSETI الرئيسية">LAMSETI <small>PRINT & CUSTOM</small></a>
+    <a class="brand" href="#home" aria-label="LAMSETI الرئيسية"><img src="assets/lamseti-symbol.svg" alt=""><span class="brand-copy">LAMSETI <small>PRINT & CUSTOM</small></span></a>
     <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
       <a href="#home">الرئيسية</a><a href="#products">المنتجات</a><a href="#notebook-request">دفتر مخصص</a><a href="#business-request">بطاقات الأعمال</a><a href="#how">طريقة الطلب</a>
@@ -114,7 +114,7 @@
     </section>
   </main>
 
-  <footer><a class="brand footer-brand" href="#home">LAMSETI <small>PRINT & CUSTOM</small></a><p>دفاتر مخصصة وبطاقات أعمال للأفراد والمهنيين وأصحاب المشاريع.</p><div id="footerContact"></div><small>© <span id="year"></span> LAMSETI. جميع الحقوق محفوظة.</small></footer>
+  <footer><a class="brand footer-brand" href="#home"><img src="assets/lamseti-symbol.svg" alt=""><span class="brand-copy">LAMSETI <small>PRINT & CUSTOM</small></span></a><p>دفاتر مخصصة وبطاقات أعمال للأفراد والمهنيين وأصحاب المشاريع.</p><div id="footerContact"></div><small>© <span id="year"></span> LAMSETI. جميع الحقوق محفوظة.</small></footer>
 
   <div class="modal" id="cartModal" aria-hidden="true"><div class="modal-panel"><button class="modal-close" data-close="cartModal">×</button><div id="cartContent"></div></div></div>
   <div class="modal" id="authModal" aria-hidden="true"><div class="modal-panel narrow"><button class="modal-close" data-close="authModal">×</button><h2>دخول المالك</h2><form id="loginForm"><label>البريد الإلكتروني<input name="email" type="email" required></label><label>كلمة المرور<input name="password" type="password" required></label><button class="btn primary full-btn">تسجيل الدخول</button><p class="form-note">حساب المالك يُنشأ مسبقاً من لوحة Supabase، ولا يوجد تسجيل عام للمديرين.</p></form><p id="authMessage" class="status-msg"></p></div></div>
