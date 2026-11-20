@@ -1154,8 +1154,8 @@ body{color:#382b35;background:#fffdfc}
 }
 .standard-visual-note>div{position:relative;z-index:2}
 .standard-visual-note>div>b{color:#713b59!important;text-shadow:none!important}
-.standard-visual-note>div>span,.standard-visual-note>div>ul{color:#594451!important;text-shadow:none!important}
-.standard-visual-note ul{color:#594451!important}
+.standard-visual-note>div>span,.standard-visual-note>div>ul{color:#713b59!important;text-shadow:none!important;font-weight:500}
+.standard-visual-note ul{color:#713b59!important}
 .steps{border-color:#efdde5!important}
 .steps article+article{border-right-color:#efdde5!important}
 .steps article>b{color:#a94772!important}
