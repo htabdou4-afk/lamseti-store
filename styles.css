@@ -1240,3 +1240,16 @@ main .hero .eyebrow{
 .business-card-preview .preview-lines span,
 .business-card-preview .preview-mark{color:#f3dce6}
 .btn.primary,.btn.primary *,.admin-open,.admin-open *, .toast,.toast *{color:#fff}
+
+
+/* Final custom artwork text colors: override the later generic main note rules */
+main .standard-visual-note>div>b{
+  color:#713b59!important;
+}
+main .standard-visual-note>div>span,
+main .standard-visual-note>div>ul,
+main .standard-visual-note>div>ul li{
+  color:#713b59!important;
+  font-weight:600!important;
+  text-shadow:none!important;
+}
