@@ -1480,3 +1480,30 @@ main .standard-visual-note>div>ul li{
 @media(prefers-reduced-motion:reduce){
   .hero-visual .planner-book,.hero-visual .notes-book,.hero-visual .business-cards{transition:none!important}
 }
+
+
+/* Mobile viewport lock: prevent tiny horizontal drift and dark side gaps */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:clip;
+}
+body{position:relative}
+@supports not (overflow:clip){
+  html,body{overflow-x:hidden}
+}
+@media(max-width:760px){
+  .site-header,
+  main,
+  .section-wrap,
+  .hero,
+  .hero-visual,
+  .business-block,
+  footer{
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  .hero-visual{overflow:hidden}
+  .business-block{width:100%;margin-inline:0}
+  img,svg,video,canvas{max-width:100%}
+}
