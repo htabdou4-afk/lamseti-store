@@ -68,7 +68,7 @@
           <label>نوع الورق<select name="paper"><option>مسطر</option><option>مربعات</option><option>فارغ</option><option>منقط</option><option>مزيج</option></select></label>
           <label>التجليد<select name="binding"><option>حلزوني</option><option>عادي</option><option>غلاف صلب</option><option>اقترحوا الأنسب</option></select></label>
           <label>لون الغلاف<input name="cover_color" placeholder="كحلي، أسود، أزرق..."></label>
-          <label>الكمية<input name="quantity" type="number" min="1" value="1" required></label>
+          <label>الكمية<input name="quantity" type="number" min="1" max="500" step="1" value="1" required inputmode="numeric"></label>
           <label class="full">عنوان التوصيل بالتفصيل *<textarea name="address" required rows="2"></textarea></label>
           <label class="full">التصميم والزخارف والتفاصيل المطلوبة<textarea name="design_notes" rows="3" placeholder="صف شكل الغلاف والألوان والصور أو الشعار..."></textarea></label>
         </div>
@@ -80,7 +80,11 @@
     <section class="section-wrap section-block business-block" id="business-request">
       <div class="section-heading"><span class="eyebrow">لأصحاب المحلات والمشاريع</span><h2>بطاقات أعمال احترافية</h2><p>بطاقات فيزيت باسم محلك أو شركتك، مع تفاصيل التواصل والهوية البصرية.</p></div>
       <div class="business-layout">
-        <div class="business-card-preview"><div class="mini-brand">LAMSETI <small>BUSINESS PRINT</small></div><div class="preview-lines"><b id="liveBusinessName">اسم نشاطك التجاري</b><span id="liveBusinessRole">الاسم والصفة المهنية</span><span id="liveBusinessContact">الهاتف • البريد • العنوان</span></div><div class="preview-mark">YOUR<br>IDENTITY</div></div>
+        <div class="business-preview-stage" aria-label="معاينة تقريبية لبطاقة الأعمال">
+          <div class="business-card-preview business-card-front"><div class="card-topline"><span class="card-brand-mark">L.</span><span class="mini-brand">LAMSETI <small>BUSINESS PRINT</small></span></div><div class="preview-lines"><b id="liveBusinessName">اسم نشاطك التجاري</b><span id="liveBusinessRole">الاسم والصفة المهنية</span><span id="liveBusinessActivity">نشاطك التجاري</span></div><div class="preview-card-footer"><span id="liveBusinessPhone">+213 XX XX XX XX</span><span>YOUR IDENTITY</span></div></div>
+          <div class="business-card-preview business-card-back"><span class="back-label">CONTACT</span><b id="liveBusinessBackName">اسم نشاطك</b><span id="liveBusinessContact">الهاتف • البريد • العنوان</span><i></i><small>Designed with LAMSETI</small></div>
+          <p class="preview-caption"><span class="live-dot"></span> معاينة تقريبية تتغير مع بياناتك، وليست ملف الطباعة النهائي</p>
+        </div>
         <form id="businessForm" class="form-card">
           <h3>اطلب عرض سعر لبطاقاتك</h3>
           <div class="form-grid">
@@ -94,7 +98,7 @@
             <label>الهاتف المطبوع<input name="printed_phone" maxlength="40"></label>
             <label>البريد الإلكتروني<input name="email" type="email" maxlength="120"></label>
             <label>روابط التواصل أو الموقع<input name="social_links" maxlength="200"></label>
-            <label>الكمية<select name="quantity"><option>100 بطاقة</option><option>200 بطاقة</option><option>500 بطاقة</option><option>1000 بطاقة</option><option>كمية أخرى</option></select></label>
+            <label>عدد البطاقات *<input name="quantity" type="number" min="50" max="50000" step="1" value="100" required inputmode="numeric"><small class="field-hint">اكتب أي كمية تريدها، ابتداءً من 50 بطاقة.</small></label>
             <label>الطباعة<select name="sides"><option>وجه واحد</option><option>وجهان</option></select></label>
             <label>التشطيب<select name="finish"><option>مطفي</option><option>لامع</option><option>حسب المتاح</option></select></label>
             <label>الشعار<select name="logo_status"><option>لدي شعار جاهز</option><option>أحتاج تصميم شعار</option><option>أحتاج تصميم البطاقة فقط</option></select></label>
