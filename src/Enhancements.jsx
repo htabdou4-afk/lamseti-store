@@ -17,26 +17,47 @@ export default function Enhancements() {
   const reduce = useReducedMotion();
 
   useEffect(() => {
-    if (reduce) return;
+    if (reduce) return undefined;
     const cleanups = [];
-    document.querySelectorAll("#productGrid .product-card").forEach((card, index) => {
+    const animateCard = card => {
+      if (card.dataset.motionReady) return;
+      card.dataset.motionReady = "true";
       const controls = animate(card, { opacity: [0, 1], y: [18, 0] }, {
-        duration: 0.58, delay: index * 0.07, ease: [0.22, 1, 0.36, 1]
+        duration: 0.58, ease: [0.22, 1, 0.36, 1]
       });
       cleanups.push(() => controls.stop());
-    });
+    };
 
-    document.querySelectorAll(".btn, .cart-open, .admin-open").forEach(button => {
-      const enter = () => animate(button, { scale: 1.025, y: -1 }, { duration: 0.18, ease: "easeOut" });
-      const leave = () => animate(button, { scale: 1, y: 0 }, { duration: 0.22, ease: "easeOut" });
-      button.addEventListener("pointerenter", enter);
-      button.addEventListener("pointerleave", leave);
-      cleanups.push(() => {
-        button.removeEventListener("pointerenter", enter);
-        button.removeEventListener("pointerleave", leave);
-      });
-    });
-    return () => cleanups.forEach(cleanup => cleanup());
+    const grid = document.getElementById("productGrid");
+    grid?.querySelectorAll(".product-card").forEach(animateCard);
+    const observer = grid ? new MutationObserver(records => {
+      records.forEach(record => record.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+        if (node.matches?.(".product-card")) animateCard(node);
+        node.querySelectorAll?.(".product-card").forEach(animateCard);
+      }));
+    }) : null;
+    observer?.observe(grid, { childList: true, subtree: true });
+
+    const onPointerOver = event => {
+      const button = event.target.closest?.(".btn, .cart-open, .admin-open");
+      if (!button || button.contains(event.relatedTarget)) return;
+      animate(button, { scale: 1.025, y: -1 }, { duration: 0.18, ease: "easeOut" });
+    };
+    const onPointerOut = event => {
+      const button = event.target.closest?.(".btn, .cart-open, .admin-open");
+      if (!button || button.contains(event.relatedTarget)) return;
+      animate(button, { scale: 1, y: 0 }, { duration: 0.22, ease: "easeOut" });
+    };
+    document.addEventListener("pointerover", onPointerOver);
+    document.addEventListener("pointerout", onPointerOut);
+
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener("pointerover", onPointerOver);
+      document.removeEventListener("pointerout", onPointerOut);
+      cleanups.forEach(cleanup => cleanup());
+    };
   }, [reduce]);
 
   return (
