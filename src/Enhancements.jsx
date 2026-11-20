@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { motion, useReducedMotion, animate } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { animate } from "motion";
 import { Button } from "./components/ui/button.jsx";
 import {
   Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription
@@ -19,8 +19,7 @@ export default function Enhancements() {
   useEffect(() => {
     if (reduce) return;
     const cleanups = [];
-    const cards = document.querySelectorAll("#productGrid .product-card");
-    cards.forEach((card, index) => {
+    document.querySelectorAll("#productGrid .product-card").forEach((card, index) => {
       const controls = animate(card, { opacity: [0, 1], y: [18, 0] }, {
         duration: 0.58, delay: index * 0.07, ease: [0.22, 1, 0.36, 1]
       });
@@ -37,7 +36,6 @@ export default function Enhancements() {
         button.removeEventListener("pointerleave", leave);
       });
     });
-
     return () => cleanups.forEach(cleanup => cleanup());
   }, [reduce]);
 
@@ -54,8 +52,7 @@ export default function Enhancements() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button size="sm" variant="outline" className="lamseti-glow">
-            كيف نجهّز طلبك؟
-            <span aria-hidden="true">↗</span>
+            كيف نجهّز طلبك؟ <span aria-hidden="true">↗</span>
           </Button>
         </DialogTrigger>
         <DialogContent>
