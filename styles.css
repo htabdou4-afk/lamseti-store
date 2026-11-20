@@ -304,3 +304,8 @@ button:disabled{opacity:.58;cursor:not-allowed;transform:none!important}
 .product-image img{display:block;aspect-ratio:1/1;object-fit:cover}
 @media(max-width:760px){.section-wrap{padding-inline:16px}.hero{gap:22px}.product-grid{gap:12px}.business-layout{min-width:0}.standard-spec-note{padding:18px}}
 @media(max-width:420px){.product-grid{grid-template-columns:1fr}.product-image{height:auto;aspect-ratio:1.15}.hero-actions .btn{flex:1 1 100%}.cart-line{align-items:flex-start}.qty-controls{flex-shrink:0}}
+
+/* Business order form and standard specification are separate grid columns. */
+.business-layout{grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:22px;align-items:start}
+.business-layout>.form-card{min-width:0}
+@media(max-width:760px){.business-layout{grid-template-columns:minmax(0,1fr)}.business-standard-note{width:100%}}
