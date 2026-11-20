@@ -19,6 +19,8 @@
     };
     const updateNotebook = () => {
       coverName.textContent = nameInput?.value.trim() || "اسمك هنا";
+      const specs=$("liveNotebookSpecs");
+      if(specs) specs.textContent=[notebookForm.elements.size?.value,notebookForm.elements.pages?.value+" صفحة",notebookForm.elements.binding?.value].filter(Boolean).join(" · ");
       const raw = colorInput?.value.trim() || "";
       const color = colors[raw] || (CSS.supports("color", raw) ? raw : "");
       if (color) coverCard.style.setProperty("--cover-color", color);
