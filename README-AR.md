@@ -3,7 +3,7 @@
 متجر عربي باتجاه RTL لعرض المنتجات واستقبال طلبات الدفاتر المصممة حسب الطلب وبطاقات الأعمال، مع لوحة إدارة خاصة بالمالك.
 
 ## روابط المشروع
-- المتجر المنشور: https://lamseti-store.vercel.app/
+- المتجر المنشور: https://lamseti-store.pages.dev/
 - مستودع GitHub: https://github.com/htabdou4-afk/lamseti-store
 
 ## التقنيات
@@ -13,7 +13,7 @@
 - الحركة: Motion (الاسم الحالي لمكتبة Framer Motion)، وLenis للتمرير الناعم، وGSAP + ScrollTrigger.
 - الأيقونات ومكوّنات الواجهة: Lucide React وRadix Dialog.
 - قاعدة البيانات والمصادقة وتخزين الصور: Supabase.
-- الاستضافة والنشر التلقائي: Vercel، ومجلد الإنتاج هو `dist/`.
+- الاستضافة والنشر التلقائي: Cloudflare Pages، ومجلد الإنتاج هو `dist/`.
 - الخط: IBM Plex Sans Arabic.
 
 ## ملفات المشروع
