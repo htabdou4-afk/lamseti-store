@@ -18,7 +18,6 @@
     const legacy=/^(?:\.\/|\/)?(?:assets\/)?(?:notebooks-set|pink-notebook|blue-notebook|collection)\.jpg$/i;
     return !src||legacy.test(src) ? categoryArtwork(category) : src;
   };
-  const imageSrc = (value,category) => { const src=String(value||"").trim(); return !src || /^(?:notebooks-set\.jpg|assets\/(?:pink-notebook|blue-notebook|collection|notebooks-set)\.jpg)$/i.test(src) ? categoryArtwork(category) : src; };
   const escapeHtml = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let products = [], settings = {store_name:"LAMSETI", whatsapp:"", order_message:"شكراً لطلبك من LAMSETI.", shipping_note:"يتم تأكيد تكلفة التوصيل حسب الولاية قبل الشحن."};
   let cart = (() => { try { const value=JSON.parse(localStorage.getItem("lamseti_cart") || "[]"); return Array.isArray(value) ? value.filter(x=>x && x.id!=null && Number.isFinite(Number(x.qty)) && Number(x.qty)>0).map(x=>({id:String(x.id),qty:Math.min(99,Math.max(1,Math.floor(Number(x.qty))))})) : []; } catch { return []; } })();
