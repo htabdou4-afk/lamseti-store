@@ -3,7 +3,7 @@
   const cfg = window.LAMSETI_CONFIG || {};
   const configured = cfg.SUPABASE_URL && !cfg.SUPABASE_URL.includes("YOUR-") &&
     cfg.SUPABASE_ANON_KEY && !cfg.SUPABASE_ANON_KEY.includes("YOUR_");
-  const supabase = configured ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
+  const supabase = configured && typeof window.supabase?.createClient === "function" ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
   const $ = id => document.getElementById(id);
   const money = n => `${Number(n || 0).toLocaleString("fr-DZ")} دج`;
   const categoryArtwork = category => {
