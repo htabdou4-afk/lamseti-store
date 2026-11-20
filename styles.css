@@ -644,3 +644,10 @@ body{
  .category-card,.category-card img,.hero-actions .btn{transition:none!important}
  .category-card:hover{transform:none}
 }
+
+
+/* Original symbolic category artwork: keep illustrations clean and text-free. */
+.category-card:before{display:none}
+.category-card img{height:calc(100% - 86px);padding:18px 20px 6px;object-fit:contain;opacity:1;filter:none;transition:transform .55s ease}
+.category-card:hover img{filter:none}
+@media(max-width:600px){.category-card img{height:calc(100% - 70px);padding:14px 14px 3px}}
