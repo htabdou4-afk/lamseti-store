@@ -1141,8 +1141,17 @@ body{color:#382b35;background:#fffdfc}
  box-shadow:0 12px 28px rgba(113,59,89,.08)!important;color:#493542!important;
  text-shadow:none!important;overflow:hidden
 }
-.standard-visual-note>img{opacity:.25!important;filter:saturate(.72)}
-.standard-visual-note:after{background:linear-gradient(90deg,rgba(255,248,250,.9),rgba(255,248,250,.62))!important}
+/* Keep custom-product artwork vivid and let the text sit on a soft readable veil */
+.standard-visual-note>img{
+  opacity:1!important;
+  filter:saturate(1.08) contrast(1.04)!important;
+}
+.standard-visual-note:after{
+  background:linear-gradient(90deg,
+    rgba(255,248,250,.06) 0%,
+    rgba(255,248,250,.14) 42%,
+    rgba(255,248,250,.78) 100%)!important;
+}
 .standard-visual-note>div{position:relative;z-index:2}
 .standard-visual-note>div>b{color:#713b59!important;text-shadow:none!important}
 .standard-visual-note>div>span,.standard-visual-note>div>ul{color:#594451!important;text-shadow:none!important}
