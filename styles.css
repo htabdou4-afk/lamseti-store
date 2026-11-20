@@ -1090,3 +1090,94 @@ body{background:#fffdfc;color:#382b35}
 @media(max-width:600px){
  .business-block{background:linear-gradient(150deg,#fff6f6,#f5eff8)}
 }
+
+
+/* LAMSETI finishing pass: readable rose UI and consistent custom-product artwork */
+:root{
+ --ink:#382b35;--paper:#fff8f7;--muted:#786875;--line:#efdde5;
+ --teal:#ad4d76;--gold:#bd956f;--lamseti-rose:#b34f78;--lamseti-deep:#713b59;
+}
+body{color:#382b35;background:#fffdfc}
+.announcement{background:#713b59!important;color:#fff!important}
+.site-header{background:#fffaf9!important}
+.brand,.brand-copy,.main-nav,.main-nav>a,.header-actions button{color:#493542}
+.main-nav>a{font-weight:600}
+.main-nav>a:hover,.main-nav>a.active{color:#a6406c}
+.main-nav>a svg,.header-actions svg{stroke:currentColor}
+.main-nav>a.active:after{background:#b34f78}
+.admin-open{background:#713b59!important;color:#fff!important;border-color:#713b59!important}
+.cart-open,.search-toggle,.menu-toggle{color:#713b59!important;background:#fff4f6!important;border-color:#e8cbd8!important}
+.menu-toggle span{background:#713b59!important}
+.search-box{background:#fffafb!important;border-color:#e8cbd8!important;color:#493542}
+.search-box input{color:#493542!important;background:#fff!important}
+.hero h1,.hero h2,.section-heading h2,.category-copy b,.product-info h3,.form-card h3,.steps h3{color:#382b35}
+.hero .eyebrow,.section-heading .eyebrow{color:#9e416b}
+.hero h2 em{color:#b34f78}
+.hero-copy>p,.section-heading>p,.product-info p,.category-copy small{color:#786875}
+.btn.primary,.product-info .btn.primary{background:#a94772!important;color:#fff!important;border-color:#a94772!important}
+.btn.primary:hover{background:#843a60!important}
+.btn.secondary{color:#843a60!important;border-color:#b34f78!important}
+.trust-strip b{color:#493542}
+.trust-strip small{color:#786875}
+.category-card{background:linear-gradient(145deg,#fff5f6,#f2eaf4)!important;border-color:#efdde5!important}
+.product-card{background:#fff!important;border-color:#efdde5!important}
+.product-image{background:linear-gradient(145deg,#fff6f6,#f3eaf2)!important}
+.product-price{color:#a6406c!important}
+.form-card{background:#fffdfd!important;border-color:#efdde5!important;color:#493542!important}
+.form-card h3{color:#713b59!important}
+.form-card label,.modal-panel label{color:#5e4b58!important}
+.form-card input,.form-card select,.form-card textarea,.modal-panel input,#checkoutForm input,#checkoutForm textarea,#loginForm input{
+ color:#493542!important;background:#fff8fa!important;border-color:#e8d6df!important
+}
+.form-card input::placeholder,.form-card textarea::placeholder{color:#9a8792!important}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus,.modal-panel input:focus{
+ border-color:#b34f78!important;box-shadow:0 0 0 3px #b34f781c!important
+}
+.form-note,.field-hint{color:#786875!important}
+.business-block{background:linear-gradient(135deg,#fff6f7,#f4edf7)!important}
+.standard-visual-note{
+ background:linear-gradient(135deg,#f8e8ee,#f0e8f4)!important;
+ border:1px solid #e8cbd8!important;border-right:4px solid #b34f78!important;
+ box-shadow:0 12px 28px rgba(113,59,89,.08)!important;color:#493542!important;
+ text-shadow:none!important;overflow:hidden
+}
+.standard-visual-note>img{opacity:.25!important;filter:saturate(.72)}
+.standard-visual-note:after{background:linear-gradient(90deg,rgba(255,248,250,.9),rgba(255,248,250,.62))!important}
+.standard-visual-note>div{position:relative;z-index:2}
+.standard-visual-note>div>b{color:#713b59!important;text-shadow:none!important}
+.standard-visual-note>div>span,.standard-visual-note>div>ul{color:#594451!important;text-shadow:none!important}
+.standard-visual-note ul{color:#594451!important}
+.steps{border-color:#efdde5!important}
+.steps article+article{border-right-color:#efdde5!important}
+.steps article>b{color:#a94772!important}
+.brand-promise{background:#fff5f7!important;color:#713b59!important}
+.brand-promise p{color:#713b59!important}
+.site-footer{background:#713b59!important;color:#fff7fa!important}
+.site-footer p,.site-footer>small{color:#f6e6ed!important}
+.footer-brand .brand-copy,.footer-brand .brand-copy>span{color:#fff!important}
+.footer-brand .brand-copy small{color:#f1d8e4!important}
+.modal{background:rgba(67,35,54,.48)!important}
+.modal-panel{background:#fffafb!important;border:1px solid #e8cbd8!important;color:#493542!important}
+.modal-panel h2,.modal-panel h3,.modal-panel b{color:#713b59!important}
+.modal-close{background:#f6e7ed!important;color:#713b59!important}
+.cart-line,.cart-total{color:#493542!important;border-color:#efdde5!important}
+.cart-total{background:#f8eaf0!important}
+.empty,.loading{background:#fff6f8!important;border-color:#efdde5!important;color:#786875!important}
+.admin-tabs{border-color:#efdde5!important}
+.admin-tabs button{color:#786875!important}
+.admin-tabs button.active{color:#8f3d64!important;border-color:#b34f78!important}
+.admin-row{background:#fff6f8!important;border-color:#efdde5!important;color:#493542!important}
+.status-select{background:#fff8fa!important;color:#493542!important;border-color:#e8d6df!important}
+.toast{background:#713b59!important;border-color:#b34f78!important;color:#fff!important}
+@media(max-width:850px){
+ .main-nav{background:#fffafb!important;border:1px solid #efdde5!important;box-shadow:0 16px 36px rgba(90,48,70,.13)!important}
+ .main-nav>a{color:#493542!important}
+ .main-nav>a:hover,.main-nav>a.active{color:#a6406c!important;background:#fff1f5!important}
+ .main-nav>a.active:after{background:#b34f78!important}
+}
+@media(max-width:600px){
+ .standard-visual-note{min-height:260px!important}
+ .standard-visual-note:after{background:linear-gradient(0deg,rgba(255,248,250,.96),rgba(255,248,250,.76) 72%,rgba(255,248,250,.48))!important}
+ .standard-visual-note>div>b{font-size:19px}
+ .standard-visual-note>div>span,.standard-visual-note>div>ul{font-size:13px}
+}
