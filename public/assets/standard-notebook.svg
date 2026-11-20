@@ -1,5 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
 <title id="title">دفتر LAMSETI بتصميم وردي</title><desc id="desc">دفتر مخصص بغلاف وردي توتي وتفاصيل شامبانيا ذهبية مع قلم وزخارف ناعمة.</desc>
+<style>
+  .notebook-main,.notebook-pen,.notebook-note{transform-box:fill-box;transform-origin:center;transition:translate .8s cubic-bezier(.2,.75,.25,1)}
+  svg:hover .notebook-main{translate:0 -15px}
+  svg:hover .notebook-pen{translate:0 -23px}
+  svg:hover .notebook-note{translate:0 -10px}
+  svg:active .notebook-main{translate:0 -10px}
+  svg:active .notebook-pen{translate:0 -15px}
+  svg:active .notebook-note{translate:0 -7px}
+  @media(prefers-reduced-motion:reduce){.notebook-main,.notebook-pen,.notebook-note{transition:none!important}}
+</style>
 <defs>
  <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#fff8f5"/><stop offset="1" stop-color="#eee2ed"/></linearGradient>
  <linearGradient id="cover" x2="1" y2="1"><stop stop-color="#c36f94"/><stop offset=".55" stop-color="#a64d76"/><stop offset="1" stop-color="#713b59"/></linearGradient>
@@ -13,7 +23,7 @@
 <path d="M0 480Q170 420 330 510T650 500T900 460V620H0Z" fill="#ead5e1" opacity=".5"/>
 <g opacity=".48" fill="none" stroke="#c88ca6" stroke-width="2"><path d="M90 145q40-50 82-12t64 2M105 133q-15-30-39-35m83 36q13-37 42-43M770 390q-35-45-75-8t-54 0"/></g>
 <ellipse cx="450" cy="480" rx="270" ry="58" fill="#603b50" opacity=".2" filter="url(#shadow)"/>
-<g transform="rotate(-8 440 310)">
+<g class="notebook-main" transform="rotate(-8 440 310)">
  <rect x="205" y="115" width="420" height="365" rx="18" fill="#9b8791" opacity=".4"/>
  <path d="M221 130h405v346H221z" fill="url(#pages)" stroke="#d8c8ce" stroke-width="3"/>
  <rect x="192" y="100" width="420" height="365" rx="20" fill="#713b59" opacity=".5"/>
@@ -28,7 +38,7 @@
  <text x="390" y="390" fill="#f4dfe7" font-family="Arial,sans-serif" font-size="12" letter-spacing="4" text-anchor="middle">YOUR STORY BEGINS</text>
  <g fill="none" stroke="url(#gold)" stroke-width="3"><path d="M178 128h-13m13 34h-13m13 34h-13m13 34h-13m13 34h-13m13 34h-13m13 34h-13m13 34h-13m13 34h-13"/></g>
 </g>
-<g transform="rotate(24 705 345)"><rect x="680" y="195" width="19" height="260" rx="9" fill="url(#gold)"/><rect x="684" y="210" width="11" height="220" rx="5" fill="#fff0d7"/><path d="M680 195l9-36 10 36z" fill="#713b59"/><path d="M680 455l9 24 10-24z" fill="#a47b43"/></g>
-<g transform="rotate(12 150 420)"><rect x="90" y="350" width="135" height="95" rx="8" fill="#fffdf8" stroke="#d9c3ce" stroke-width="2"/><path d="M111 378h92M111 395h74M111 412h82" stroke="#d8b9c8" stroke-width="3" stroke-linecap="round"/><circle cx="185" cy="428" r="8" fill="#bd8d5e"/></g>
+<g class="notebook-pen" transform="rotate(24 705 345)"><rect x="680" y="195" width="19" height="260" rx="9" fill="url(#gold)"/><rect x="684" y="210" width="11" height="220" rx="5" fill="#fff0d7"/><path d="M680 195l9-36 10 36z" fill="#713b59"/><path d="M680 455l9 24 10-24z" fill="#a47b43"/></g>
+<g class="notebook-note" transform="rotate(12 150 420)"><rect x="90" y="350" width="135" height="95" rx="8" fill="#fffdf8" stroke="#d9c3ce" stroke-width="2"/><path d="M111 378h92M111 395h74M111 412h82" stroke="#d8b9c8" stroke-width="3" stroke-linecap="round"/><circle cx="185" cy="428" r="8" fill="#bd8d5e"/></g>
 <text x="72" y="555" fill="#8f4d70" font-family="Arial,sans-serif" font-size="15" letter-spacing="4">PERSONALIZED NOTEBOOK · A5</text>
 </svg>
